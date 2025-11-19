@@ -2,8 +2,11 @@
     // LaTeX Workshop configuration for this project
     "latex-workshop.latex.recipes": [
         {
-            "name": "XeLaTeX",
+            "name": "XeLaTeX with BibTeX",
             "tools": [
+                "xelatex",
+                "bibtex",
+                "xelatex",
                 "xelatex"
             ]
         },
@@ -13,6 +16,12 @@
                 "xelatex",
                 "biber",
                 "xelatex",
+                "xelatex"
+            ]
+        },
+        {
+            "name": "XeLaTeX",
+            "tools": [
                 "xelatex"
             ]
         }
@@ -31,6 +40,13 @@
         {
             "name": "biber",
             "command": "biber",
+            "args": [
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
             "args": [
                 "%DOCFILE%"
             ]
