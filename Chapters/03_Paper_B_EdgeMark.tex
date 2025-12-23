@@ -14,7 +14,7 @@
 
 The integration of \gls{ai} into embedded devices, a paradigm known as \gls{eai} or \gls{tinyml}, is transforming industries by enabling intelligent data processing at the edge. However, the many tools available in this domain leave researchers and developers wondering which one is best suited to their needs. This paper provides a review of existing \gls{eai} tools, highlighting their features, trade-offs, and limitations. Additionally, we introduce EdgeMark, an open-source automation system designed to streamline the workflow for deploying and benchmarking \gls{ml} models on embedded platforms. EdgeMark simplifies model generation, optimization, conversion, and deployment while promoting modularity, reproducibility, and scalability. Experimental benchmarking results showcase the performance of widely used \gls{eai} tools, including \gls{tflm}, Edge Impulse, Ekkono, and Renesas eAI Translator, across a wide range of models, revealing insights into their relative strengths and weaknesses. The findings provide guidance for researchers and developers in selecting the most suitable tools for specific application requirements, while EdgeMark lowers the barriers to adoption of \gls{eai} technologies.
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.75\textwidth]{Pictures/Paper_edgemark/EdgeMark_abstract_vertical_Helvetica.pdf}
 \caption{Graphical abstract.}
@@ -156,7 +156,7 @@ We have identified approximately 50 tools related to \gls{eai}. In addition to t
 
 \begingroup
 \renewcommand\arraystretch{1.5}
-\begin{sidewaystable*}[htbp]
+\begin{sidewaystable}[htbp]
   \caption{\rv{Important features of eAI tools.}}
   \label{tab:tools}
   \begin{center}
@@ -197,7 +197,7 @@ We have identified approximately 50 tools related to \gls{eai}. In addition to t
       \end{tablenotes}
     \end{threeparttable}
   \end{center}
-\end{sidewaystable*}
+\end{sidewaystable}
 \endgroup
 
 % gls' avoided in the following paragraph for the highlighting purpose: eai
@@ -237,7 +237,7 @@ The modules are interconnected, as shown in Figure \ref{fig:EdgeMark_modules}. T
 \rv{With the exception of Ekkono, which uses its own model generation workflow, all other eAI tools work seamlessly with TFLite models. Since TFLite is best supported within the TensorFlow ecosystem, models are primarily developed using TensorFlow and subsequently converted to the TFLite format.}
 
 \newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
-\begin{table*}[htbp]
+\begin{table}[htbp]
   \caption{Correspondence between EdgeMark modules and function blocks.}
   \begin{center}
     \begin{tabular}{c|C{3em}|C{3em}|C{3em}|C{3em}}
@@ -254,14 +254,14 @@ The modules are interconnected, as shown in Figure \ref{fig:EdgeMark_modules}. T
     \end{tabular}
     \label{tab:modules_vs_function_blocks}
   \end{center}
-\end{table*}
+\end{table}
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \includegraphics{Pictures/Paper_edgemark/EdgeMark_modules_vertical_Helvetica.pdf}
   \caption{\rv{EdgeMark modules and their interconnections.}}
   \label{fig:EdgeMark_modules}
-\end{figure*}
+\end{figure}
 
 Running the main script will display the project's main menu where users can select the set of modules they wish to execute. EdgeMark runs the selected modules sequentially, storing their outputs for subsequent modules and for user reference. The primary output from the final layer of the workflow includes the execution time, flash size, RAM usage, and deployment error of the model on the target device. Additionally, the system generates a report summarizing the workflow results.
 
@@ -423,7 +423,7 @@ To evaluate the performance of the \gls{eai} tools, we conducted a series of exp
 
 EdgeMark employs several tools and platforms to accomplish its objective. Table~\ref{tab:tools_versions} summarizes their versions and purposes as used in the benchmark. Among these, STM32CubeIDE, STM32CubeCLT, Renesas e2 studio, and Renesas Flash Programmer, must be installed manually if the relevant modules are used. Additionally, an Edge Impulse account is necessary to utilize its corresponding module.
 
-\begin{table*}[htbp]
+\begin{table}[htbp]
   \caption{Tools and Platforms Used in EdgeMark}
   \begin{center}
     \begin{tabular}{|l|l|l|}
@@ -453,7 +453,7 @@ EdgeMark employs several tools and platforms to accomplish its objective. Table~
     \end{tabular}
     \label{tab:tools_versions}
   \end{center}
-\end{table*}
+\end{table}
 
 For both \glspl{ide}, STM32CubeIDE and Renesas e2 studio, the projects were created using default settings, with the exception of the compiler optimizations, which were set to their maximum level. To execute \gls{tflm} models on the NUCLEO-L4R5ZI board, we integrated the CMSIS-NN library, which significantly accelerates the performance of 8-bit and 16-bit integer quantized models by leveraging the SIMD instructions of the ARM Cortex-M4 processor. Renesas has also provided a CMSIS-NN library optimized for their RX microcontrollers, which we have used to execute eAI Translator models on the Renesas RX65N board.
 
@@ -461,7 +461,7 @@ For both \glspl{ide}, STM32CubeIDE and Renesas e2 studio, the projects were crea
 \label{sec:models}
 We selected a wide range of models to ensure a comprehensive evaluation of the tools' capabilities. These include 11 \gls{fc} models, 7 \gls{cnn} models, 7 \gls{rnn} models, and 4 models taken from the MLPerf Tiny benchmark. As illustrated in Fig.~\ref{fig:FC_CNN_stats}, the \gls{fc} and \gls{cnn} models are well distributed across a range of parameters and \glspl{mac}, ensuring that our evaluation covers both lightweight and computationally intensive models.
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/FC_stats.pdf}
@@ -475,13 +475,13 @@ We selected a wide range of models to ensure a comprehensive evaluation of the t
   \end{subfigure}
   \caption{Number of parameters and MACs for \gls{fc} and \gls{cnn} models.}
   \label{fig:FC_CNN_stats}
-\end{figure*}
+\end{figure}
 
 \textit{FC 0} serves as a minimal baseline, with an input size of 1, an output size of 1, and no hidden layers. It can be useful for analyzing the overhead of the library executing the model. Similarly, in the \gls{rnn} category, \textit{Simple 0}, which has the minimal structure of an \gls{rnn}, plays an analogous role. However, because \gls{rnn} models involve more complex operations, \textit{Simple 0} is much more demanding compared to \textit{FC 0}.
 
 The \gls{rnn} models include five SimpleRNNs, one LSTM, and one GRU. All \gls{rnn} models process sequence lengths of 100, except for \textit{Simple 0}, which operates on a sequence length of 2. Two of the SimpleRNN-based models are \textit{Shakespeare 1} and \textit{Shakespeare 2} models that have an embedding layer before their \gls{rnn} units and are trained on the \texttt{tiny\_shakespeare} dataset \cite{Karpathy2015}. Detailed information about the \gls{rnn} models is presented in Table~\ref{tab:RNN_stats}.
 
-\begin{table*}[htbp]
+\begin{table}[htbp]
   \caption{Details of \gls{rnn} Models}
   \begin{center}
     \begin{tabular}{|l|l|l|r|r|}
@@ -505,11 +505,11 @@ The \gls{rnn} models include five SimpleRNNs, one LSTM, and one GRU. All \gls{rn
     \end{tabular}
     \label{tab:RNN_stats}
   \end{center}
-\end{table*}
+\end{table}
 
 Lastly, Table~\ref{tab:MLPerf_stats} provides an overview of the MLPerf Tiny models used in this evaluation. By including this wide range of models, we aim to provide meaningful insights into the performance and efficiency of the tools across different neural network architectures.
 
-\begin{table*}[htbp]
+\begin{table}[htbp]
   \caption{Details of MLPerf Tiny Models}
   \begin{center}
     \begin{tabular}{|l|r|r|l|}
@@ -527,7 +527,7 @@ Lastly, Table~\ref{tab:MLPerf_stats} provides an overview of the MLPerf Tiny mod
     \end{tabular}
     \label{tab:MLPerf_stats}
   \end{center}
-\end{table*}
+\end{table}
 
 \subsection{Experiments}
 We have structured our analysis into ten experiments, five of which are described in this section, with the remaining five detailed in \ref{sec:appendix}. It is worth emphasizing that each experiment is designed to compare the general behavior of the test subjects, though there may be some exceptional cases that deviate from the trends. For a comprehensive overview of the results, readers are encouraged to refer to the project's documentation\footnote{\href{https://black3rror.github.io/EdgeMark}{https://black3rror.github.io/EdgeMark}}.
@@ -547,7 +547,7 @@ In general, the following quantization schemes are available in EdgeMark:
 
 In this study, we evaluate the performance of several quantization schemes using the \gls{tflm} platform. \Gls{tflm} was chosen because it is the only framework that supports the majority of available quantization methods. In particular, it supports all the abovementioned quantizations, except \textit{float 16}. This is while, Edge Impulse and eAI Translator only support the \textit{int8 only} quantization\footnote{The \textit{int8} quantization may also be supported, but it was not tested.}.
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_fc_error.pdf}
@@ -562,9 +562,9 @@ In this study, we evaluate the performance of several quantization schemes using
   \end{subfigure}
   \caption{Deployment error across various quantization schemes. The models were tested on NUCLEO-L4R5ZI.}
   \label{fig:study_quants_error}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_fc_exe.pdf}
@@ -579,9 +579,9 @@ In this study, we evaluate the performance of several quantization schemes using
   \end{subfigure}
   \caption{Average execution time across various quantization schemes. The models were tested on NUCLEO-L4R5ZI.}
   \label{fig:study_quants_exe}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_fc_flash.pdf}
@@ -596,9 +596,9 @@ In this study, we evaluate the performance of several quantization schemes using
   \end{subfigure}
   \caption{Flash memory usage for various quantization schemes. The models were tested on NUCLEO-L4R5ZI.}
   \label{fig:study_quants_flash}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_fc_ram.pdf}
@@ -611,7 +611,7 @@ In this study, we evaluate the performance of several quantization schemes using
   \end{subfigure}
   \caption{RAM usage across various quantization schemes. The models were tested on NUCLEO-L4R5ZI.}
   \label{fig:study_quants_ram}
-\end{figure*}
+\end{figure}
 
 To perform the evaluation, we tested the \gls{fc} and \gls{cnn} models on the two available boards. Figures~\ref{fig:study_quants_error}--\ref{fig:study_quants_ram} compare these setups in terms of deployment error, execution time, flash size, and RAM usage on the STM board.
 \begin{itemize}
@@ -632,7 +632,7 @@ This study examines the effects of pruning and clustering on model performance. 
 
 The counterintuitive nature of this limitation lies in the fact that, in unstructured pruning, the zero values for the pruned weights still occupy memory and consume the same storage space as non-pruned weights. It is worth noting that pruned models can be compressed more effectively due to the repetitive zero values in their weights. However, such compression requires decompression before execution, which negates most practical gains. Moreover, in terms of runtime performance, multiplying a pruned weight (zero) with another value takes the same clock cycles as a multiplication involving non-zero weights. Consequently, unstructured pruning yields no improvement in execution time. Similarly, clustering, which involves grouping weights into discrete clusters, offers little to no advantage in improving the model's performance on general-purpose hardware.
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_pruning_clustering_cnn_error.pdf}
@@ -647,14 +647,14 @@ The counterintuitive nature of this limitation lies in the fact that, in unstruc
   \end{subfigure}
   \caption{Performance evaluation of basic, pruned, and clustered \gls{cnn} models on the NUCLEO-L4R5ZI board.}
   \label{fig:study_pruning_clustering}
-\end{figure*}
+\end{figure}
 
 To elucidate these findings, we evaluated \gls{fc} and \gls{cnn} models on the NUCLEO-L4R5ZI board. In our experiments, we applied 50\% sparsity for pruning and clustering with 16 centroids. These techniques increase the error of the models (see Fig.~\ref{fig:study_pruning_clustering_cnn_error}), which can be mitigated to some extent through fine-tuning. However, as illustrated in Fig.\ref{fig:study_pruning_clustering_cnn_exe}, the execution times for the basic, pruned, and clustered models are nearly identical, with less than 0.01\% difference. This negligible variation means the plots are essentially overlaid. The same holds true for the flash memory usage and RAM requirements of the models.
 
 \subsubsection{TFLM vs. Edge Impulse}
 \Gls{tflm} and Edge Impulse are two prominent tools in the \gls{eai} domain. While Edge Impulse originally relied on \gls{tflm} and still provides the option to deploy models using it, it has significantly evolved over the years. With features like its EON compiler, Edge Impulse introduces a unique approach to model execution. However, it is worth noting that Edge Impulse still utilizes \gls{tflm}'s core kernels in most cases.
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_ei_fc_exe.pdf}
@@ -669,7 +669,7 @@ To elucidate these findings, we evaluated \gls{fc} and \gls{cnn} models on the N
   \end{subfigure}
   \caption{Performance evaluation of \gls{fc} models deployed using Edge Impulse and \gls{tflm} on the STM board.}
   \label{fig:study_ei}
-\end{figure*}
+\end{figure}
 
 As Edge Impulse does not natively support \glspl{rnn}, this study focuses on testing \gls{fc}, \gls{cnn}, and MLPerf Tiny models deployed on the STM and Renesas boards. The results show that on the Renesas board, \gls{tflm} outperforms Edge Impulse in terms of execution time, flash size, and RAM usage. On the STM board, the key findings are as follows:
 \begin{itemize}
@@ -683,7 +683,7 @@ As Edge Impulse does not natively support \glspl{rnn}, this study focuses on tes
 \subsubsection{TFLM vs. Ekkono}
 Ekkono is a lightweight edge AI library designed to support incremental learning directly on embedded devices. Since Ekkono is not able to do classification, we have slightly changed some models to make them suitable for regression. The changes are minimal and should not have a noticeable impact on the results.
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_ekkono_exe.pdf}
@@ -698,7 +698,7 @@ Ekkono is a lightweight edge AI library designed to support incremental learning
   \end{subfigure}
   \caption{Performance evaluation of Ekkono and \gls{tflm} models on the NUCLEO-L4R5ZI board.}
   \label{fig:study_ekkono}
-\end{figure*}
+\end{figure}
 
 \begin{itemize}
   \item \textbf{Model correctness:} Both Ekkono and \gls{tflm}'s \textit{basic} version can perfectly reproduce the expected values. \gls{tflm}'s \textit{int8 only} version has a bit of error which remains in the acceptable range.
@@ -711,7 +711,7 @@ Ekkono is a lightweight edge AI library designed to support incremental learning
 \subsubsection{TFLM vs. eAI Translator}
 Renesas eAI Translator is a vendor-specific tool designed to enable the execution of neural networks on Renesas microcontrollers. Our testing hardware, the Renesas RX65N, incorporates a proprietary RXv2 CPU architecture. Since \gls{tflm} lacks optimized kernel implementations for RXv2, it handles this architecture as a general-purpose CPU. In contrast, Renesas eAI Translator provides the capability to fine-tune implementations specifically for the target hardware, potentially achieving better performance. In this study, we assess whether such hardware-specific tuning allows eAI Translator to outperform the more generic \gls{tflm}.
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_translator_cnn_error.pdf}
@@ -726,7 +726,7 @@ Renesas eAI Translator is a vendor-specific tool designed to enable the executio
   \end{subfigure}
   \caption{Performance evaluation of \gls{cnn} models deployed using eAI Translator and \gls{tflm} on the Renesas RX65N board.}
   \label{fig:study_translator}
-\end{figure*}
+\end{figure}
 
 \begin{itemize}
   \item \textbf{Model correctness:} The error rate of \gls{tflm} and eAI Translator are normally the same, but for some large models, \gls{tflm} is more suitable due to lower error rates.
@@ -759,7 +759,7 @@ This work was supported by the Innovation Fund Denmark for the Project Digital R
 
 \Gls{rnn} models are widely used in applications that require processing sequential data. However, deploying these resource-intensive models on embedded devices requires careful consideration. In this study, we evaluated the performance of SimpleRNN, LSTM, and GRU models using \gls{tflm} on the NUCLEO-L4R5ZI board. The models are introduced in Section \ref{sec:models}, and the results can be found in Table~\ref{tab:RNN_results}. To provide a clear comparison, memory usage is visualized in Fig.\ref{fig:study_rnn}, from which \textit{Simple 0} is excluded due to its negligible resource requirements compared to other models. Similarly, \textit{Simple 2} is excluded because its \textit{basic} version failed to execute on the board.
 
-\begin{table*}[htbp]
+\begin{table}[htbp]
   \caption{Performance Evaluation of \gls{rnn} Models}
   \begin{center}
     \begin{tabular}{|l|l|l|l|l|l|}
@@ -790,9 +790,9 @@ This work was supported by the Innovation Fund Denmark for the Project Digital R
     \end{tabular}
     \label{tab:RNN_results}
   \end{center}
-\end{table*}
+\end{table}
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_rnn_flash.pdf}
@@ -807,7 +807,7 @@ This work was supported by the Innovation Fund Denmark for the Project Digital R
   \end{subfigure}
   \caption{Performance evaluation of RNN models on the NUCLEO-L4R5ZI board.}
   \label{fig:study_rnn}
-\end{figure*}
+\end{figure}
 
 \begin{itemize}
   \item \textbf{Model correctness:} With the exception of the \textit{basic} version of \textit{Simple 2} which runs out of memory, all models achieved acceptable error rates. The most concerning case is \textit{GRU}, which may require more attention.
@@ -821,7 +821,7 @@ It is believed that LSTM is more powerful than GRU, while GRU is often favored f
 
 \subsection{GCC Optimization Levels}
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_opt_cnn_exe.pdf}
@@ -836,7 +836,7 @@ It is believed that LSTM is more powerful than GRU, while GRU is often favored f
   \end{subfigure}
   \caption{Performance evaluation of \gls{cnn} models with different GCC optimization levels on the NUCLEO-L4R5ZI board.}
   \label{fig:study_opt}
-\end{figure*}
+\end{figure}
 
 The \gls{gcc} is a widely used compiler for C and C++ programming languages. \Gls{gcc} provides several optimization levels, ranging from \textit{O0} (no optimization) to \textit{O3} (maximum optimization). In this study, we evaluated the impact of \textit{Os} (optimize for size), \textit{Of} (optimize for speed), and \textit{O3} on the performance of \gls{fc} and \gls{cnn} models deployed on the NUCLEO-L4R5ZI board using \gls{tflm}.
 
@@ -852,7 +852,7 @@ The \gls{gcc} is a widely used compiler for C and C++ programming languages. \Gl
 
 The \gls{fpu} is a specialized coprocessor designed to handle floating-point arithmetic operations efficiently. To check the speedup provided by the \gls{fpu}, we evaluated the performance of \gls{fc} and \gls{cnn} models on the NUCLEO-L4R5ZI board with and without the \gls{fpu} enabled.
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_fpu_fc_exe.pdf}
@@ -867,7 +867,7 @@ The \gls{fpu} is a specialized coprocessor designed to handle floating-point ari
   \end{subfigure}
   \caption{Execution time of models with and without the \gls{fpu} on the NUCLEO-L4R5ZI board.}
   \label{fig:study_fpu}
-\end{figure*}
+\end{figure}
 
 Our results show that \gls{fpu} does not have a noticable impact on any of the evaluated metrics other than execution time. As illustrated in Fig.~\ref{fig:study_fpu}, the \gls{fpu} provides a significant speedup (85\% to 850\%) for the \textit{basic} variants of both \gls{fc} and \gls{cnn} models. Still, if using \textit{int8 only}, utilizing the CMSIS-NN library can be even more beneficial and there is no need for the \gls{fpu}.
 
@@ -875,7 +875,7 @@ Our results show that \gls{fpu} does not have a noticable impact on any of the e
 
 STMicroelectronics and Renesas are two major semiconductor companies that provide microcontrollers for embedded systems. STMicroelectronics is more popular between researchers and hobbyists, while Renesas is more focused on industrial and automotive applications.
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_stm_renesas_cnn_exe.pdf}
@@ -890,7 +890,7 @@ STMicroelectronics and Renesas are two major semiconductor companies that provid
   \end{subfigure}
   \caption{Performance evaluation of \gls{cnn} models on the STM and Renesas boards.}
   \label{fig:study_stm_renesas}
-\end{figure*}
+\end{figure}
 
 The two selected boards from these companies, STM NUCLEO-L4R5ZI and Renesas RX65N, have similar specifications, including identical flash size, RAM, and clock speed, along with many other shared features. However, the RX65N board has a proprietary RXv2 CPU architecture, while the NUCLEO-L4R5ZI board uses an ARM Cortex-M4 core. This distinction makes the comparison between these two boards particularly intriguing.
 
@@ -906,7 +906,7 @@ The two selected boards from these companies, STM NUCLEO-L4R5ZI and Renesas RX65
 
 \subsection{GCC vs CCRX}
 
-\begin{figure*}[tbp]
+\begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_ccrx_fc_exe.pdf}
@@ -921,7 +921,7 @@ The two selected boards from these companies, STM NUCLEO-L4R5ZI and Renesas RX65
   \end{subfigure}
   \caption{Execution time of models deployed using CC-RX and \gls{gcc} compilers on the Renesas RX65N board.}
   \label{fig:study_ccrx}
-\end{figure*}
+\end{figure}
 
 Renesas offers \gls{gcc} as a free compiler for their microcontrollers, while they also provide their proprietary compiler, CC-RX, which is further optimized for RX microcontrollers. In this study, we evaluated the performance of \gls{fc} and \gls{cnn} models deployed on the Renesas RX65N board using eAI Translator and CC-RX and \gls{gcc} compilers.
 
