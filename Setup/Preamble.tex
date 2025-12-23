@@ -19,11 +19,20 @@
 \usepackage[english]{babel} % localisation 
 \usepackage{caption}        % better captions
 \usepackage{subcaption}     % for subfigures
+\usepackage{rotating}       % sidewaystable/sidewaysfigure
 \usepackage{csquotes}       % For biblatex with babel
 \usepackage[backend=bibtex,style=numeric,sorting=none]{biblatex} % Package for bibliography (citing)
 \bibliography{bibliography.bib}
+\bibliography{edgemark_references.bib}
 \usepackage{tabularx}       % for ability to adjust column spacing in tabular better
 \usepackage{booktabs}       % for better tables
+\usepackage{array}          % extended tabular features
+\usepackage{makecell}       % line breaks in table cells
+\usepackage{multirow}       % multirow cells in tables
+\usepackage{threeparttable} % tables with notes (tablenotes/tnote)
+\usepackage{pifont}         % ding symbols (used for check/cross marks)
+\usepackage{algorithm}      % algorithm float
+\usepackage{algpseudocode}  % algorithmic pseudocode
 \usepackage{float}          % floating figures in correct places
 \usepackage{calc}           % Adds ability for latex to calculate (3pt+2pt) 
 \usepackage{blindtext}
@@ -36,21 +45,28 @@
 \newacronym{ml}{ML}{Machine Learning}
 \newacronym{dl}{DL}{Deep Learning}
 \newacronym{ai}{AI}{Artificial Intelligence}
+\newacronym{eai}{eAI}{embedded artificial intelligence}
+\newacronym{tinyml}{TinyML}{tiny machine learning}
 \newacronym{ann}{ANN}{Artificial Neural Network}
 \newacronym{nn}{NN}{Neural Network}
+\newacronym{automl}{AutoML}{automated machine learning}
 
 \newacronym{mlp}{MLP}{Multi-Layer Perceptron}
+\newacronym{fc}{FC}{fully connected}
 \newacronym{cnn}{CNN}{Convolutional Neural Network}
 \newacronym{rnn}{RNN}{Recurrent Neural Network}
 \newacronym{nlp}{NLP}{Natural Language Processing}
 
 \newacronym{knn}{KNN}{k-Nearest Neighbor}
 \newacronym{svm}{SVM}{Support Vector Machine}
+\newacronym{xgboost}{XGBoost}{extreme gradient boosting}
+\newacronym{lightgbm}{LightGBM}{light gradient boosting machine}
 \newacronym{nas}{NAS}{Neural Architecture Search}
 
 \newacronym{tf}{TF}{TensorFlow}
 \newacronym{tflite}{TFLite}{TensorFlow Lite}
 \newacronym{tflm}{TFLM}{TensorFlow Lite Micro}
+\newacronym{tvm}{TVM}{Tensor Virtual Machine}
 \newacronym{ell}{ELL}{Embedded Learning Library}
 \newacronym{aifes}{AIfES}{Artificial Intelligence for Embedded Systems}
 \newacronym{fann}{FANN}{Fast Artificial Neural Network}
@@ -61,8 +77,10 @@
 \newacronym{mcu}{MCU}{Microcontroller Unit}
 \newacronym{cpu}{CPU}{Central Processing Unit}
 \newacronym{gpu}{GPU}{Graphics Processing Unit}
+\newacronym{npu}{NPU}{neural processing unit}
 \newacronym{dsp}{DSP}{Digital Signal Processor}
 \newacronym{fpga}{FPGA}{Field Programmable Gate Array}
+\newacronym{plc}{PLC}{programmable logic controller}
 \newacronym{asic}{ASIC}{Application Specific Integrated Circuit}
 \newacronym{simd}{SIMD}{Single Instruction Multiple Data}
 \newacronym{ram}{RAM}{Random-Access Memory}
@@ -70,5 +88,11 @@
 \newacronym{dram}{DRAM}{Dynamic Random-Access Memory}
 \newacronym{mac}{MAC}{Multiply-Accumulate}
 \newacronym{fp}{FP}{Floating Point}
+\newacronym{fpu}{FPU}{floating-point unit}
 
 \newacronym{iot}{IoT}{Internet of Things}
+\newacronym{ide}{IDE}{integrated development environment}
+\newacronym{sdk}{SDK}{software development kit}
+\newacronym{wandb}{W\&B}{Weights \& Biases}
+\newacronym{usmp}{USMP}{unified static memory planner}
+\newacronym{gcc}{GCC}{GNU Compiler Collection}

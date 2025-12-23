@@ -1,37 +1,3 @@
-\chapter{Paper B: EdgeMark: An automation and benchmarking system for embedded artificial intelligence tools}\label{ch:paper-b-edgemark}
-
-% Local helpers
-\newcommand{\rv}[1]{#1}
-\newcommand{\resultswidth}{0.75\textwidth}
-\newcommand{\tf}{TensorFlow}
-\newcommand{\cmark}{\ding{51}}
-\newcommand{\xmark}{\ding{55}}
-\newcommand{\onestar}{\ding{91}}
-\newcommand{\twostar}{\ding{91}\ding{91}}
-\newcommand{\threestar}{\ding{91}\ding{91}\ding{91}}
-
-\section{Paper Abstract}
-
-The integration of \gls{ai} into embedded devices, a paradigm known as \gls{eai} or \gls{tinyml}, is transforming industries by enabling intelligent data processing at the edge. However, the many tools available in this domain leave researchers and developers wondering which one is best suited to their needs. This paper provides a review of existing \gls{eai} tools, highlighting their features, trade-offs, and limitations. Additionally, we introduce EdgeMark, an open-source automation system designed to streamline the workflow for deploying and benchmarking \gls{ml} models on embedded platforms. EdgeMark simplifies model generation, optimization, conversion, and deployment while promoting modularity, reproducibility, and scalability. Experimental benchmarking results showcase the performance of widely used \gls{eai} tools, including \gls{tflm}, Edge Impulse, Ekkono, and Renesas eAI Translator, across a wide range of models, revealing insights into their relative strengths and weaknesses. The findings provide guidance for researchers and developers in selecting the most suitable tools for specific application requirements, while EdgeMark lowers the barriers to adoption of \gls{eai} technologies.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.75\textwidth]{Pictures/Paper_edgemark/EdgeMark_abstract_vertical_Helvetica.pdf}
-\caption{Graphical abstract.}
-\end{figure}
-
-\section{Research Highlights}
-\begin{itemize}
-\item Review of embedded AI tools, their features, strengths, and limitations
-\item EdgeMark: an open-source edge AI automation and benchmarking system
-\item TensorFlow Lite Micro (TFLM) versus Edge Impulse, Ekkono, and Renesas eAI Translator
-\end{itemize}
-
-\section{Keywords}
-Machine learning; TinyML; Embedded AI; Automation; Benchmarking; Microcontrollers
-
-MSC 68T99
-
 \section{Introduction}
 \label{sec:introduction}
 
@@ -926,3 +892,4 @@ The two selected boards from these companies, STM NUCLEO-L4R5ZI and Renesas RX65
 Renesas offers \gls{gcc} as a free compiler for their microcontrollers, while they also provide their proprietary compiler, CC-RX, which is further optimized for RX microcontrollers. In this study, we evaluated the performance of \gls{fc} and \gls{cnn} models deployed on the Renesas RX65N board using eAI Translator and CC-RX and \gls{gcc} compilers.
 
 Since we could not interpret the memory requirements of the models using CC-RX, we only evaluated the execution time of the models. As evidenced by Fig.~\ref{fig:study_ccrx}, the \gls{gcc} compiler demonstrated better performance than CC-RX in terms of execution speed under default settings and highest optimization levels.
+
