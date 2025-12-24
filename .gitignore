@@ -1,5 +1,6 @@
 Example/
 TODO.md
+.DS_Store
 
 # LaTeX intermediate files
 *.acn
@@ -42,6 +43,7 @@ TODO.md
 *.thm
 *.toc
 *.vrb
+*.xdv
 *.xdy
 *.xml
 *blx.bib
