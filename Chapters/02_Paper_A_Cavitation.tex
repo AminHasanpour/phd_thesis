@@ -1,14 +1,36 @@
 \chapter{Paper A: Pump Cavitation Detection with Machine Learning: A Comparative Study of SVM and Deep Learning}\label{ch:paper-a-cavitation}
 
-% TODO: An intro paragraph about the paper can go here.
+\noindent \textbf{Mohammad Amin Hasanpour}\\
+\textit{Technical University of Denmark (DTU)}\\
+Kgs. Lyngby, Denmark\\
+moam@dtu.dk
 
-\section{Paper Abstract}\label{sec:paper-a-abstract}
+\medskip
+
+\noindent \textbf{Rasmus Engholm}\\
+\textit{Grundfos Holding A/S}\\
+Bjerringbro, Denmark\\
+rasmus.engholm@gmail.com
+
+\medskip
+
+\noindent \textbf{Xenofon Fafoutis}\\
+\textit{Technical University of Denmark (DTU)}\\
+Kgs. Lyngby, Denmark\\
+xefa@dtu.dk
+
+\section{Abstract}\label{sec:paper-a-abstract}
 
 In the pursuit of enhancing industrial pump reliability and efficiency, this paper addresses the challenging issue of pump cavitation detection through the innovative application of \gls{ml} techniques. 
 Cavitation, a prevalent problem in pumps, significantly compromises their performance, causing damage and operational inefficiencies. 
 Traditionally, cavitation detection has relied on numerical analysis and signal processing methods, which, despite their merit, often fall short in real-world applications due to their requirement for extensive domain knowledge and controlled operational conditions. This study diverges from conventional approaches by harnessing the power of \gls{ml} to predict cavitation occurrences in pumps under varying real-world conditions with high accuracy.
 
 We present an analysis of a cavitation dataset compiled by the Danish pump manufacturer Grundfos, which includes vibration data from 297 experiments on seven different pumps, using both traditional \gls{ml} models, specifically \gls{svm}, and advanced \gls{dl} techniques. Our methodology includes a detailed examination of the dataset, feature engineering, target definition, problem formulation, model design, and rigorous model testing on target hardware. Remarkably, our study not only demonstrates that \gls{ml} models, particularly \gls{dl} models, can adaptively and accurately predict cavitation but also emphasizes the importance of testing these models on target hardware to ensure their practical applicability. This work is accompanied by an open-source implementation.
+
+% \section*{Keywords}
+% Cavitation; Support Vector Machine; Deep Learning; Machine Learning; Centrifugal Pump
+
+\newpage
 
 \section{Introduction}\label{sec:paper-a-introduction}
 
@@ -265,3 +287,6 @@ The results of the study demonstrated that deep learning models, particularly co
 The study's findings underscored the importance of testing machine learning models on target hardware to ensure their practical applicability, a missing point in most of the embedded artificial intelligence literature, especially in the context of industrial applications.
 
 Although a very compact and powerful model was designed in this study, still it is interesting to see how the model can be further optimized by leveraging the Neural Architecture Search (NAS) and model compression techniques \cite{Elsken2019, Liu2018, Cai2018, Cai2019, Liu2017, Hinton2015}, especially those designed for embedded systems \cite{Njor2023, Banbury2021, Ghanathe2023}. This can be a promising direction for future research.
+
+\section*{Acknowledgements}
+This work is supported by the Innovation Fund Denmark for the project DIREC (9142-00001B).

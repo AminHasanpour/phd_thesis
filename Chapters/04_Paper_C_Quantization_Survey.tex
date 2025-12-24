@@ -5,31 +5,32 @@
 % than the standalone IEEE paper. To keep the paper text word-for-word, this
 % chapter spells out AI/DL/ML/NN explicitly where needed.
 
-\section*{A Survey of Quantization Techniques in Embedded AI Toolchains\footnote{This work is supported by the Innovation Fund Denmark for the project DIREC (9142-00001B). Additional support for the research stay at Politecnico di Milano was provided by the Danish Society of Engineers (IDA) and Thomas B. Thriges Fond.}}
-
-\noindent Mohammad Amin Hasanpour\\
+\noindent \textbf{Mohammad Amin Hasanpour}\\
 \textit{Technical University of Denmark (DTU)}\\
 Kgs. Lyngby, Denmark\\
 moam@dtu.dk
 
 \medskip
 
-\noindent Xenofon Fafoutis\\
+\noindent \textbf{Xenofon Fafoutis}\\
 \textit{Technical University of Denmark (DTU)}\\
 Kgs. Lyngby, Denmark\\
 xefa@dtu.dk
 
 \medskip
 
-\noindent Manuel Roveri\\
+\noindent \textbf{Manuel Roveri}\\
 \textit{Politecnico di Milano}\\
 Milano, Italy\\
 manuel.roveri@polimi.it
 
-\section{Paper Abstract}
+\section{Abstract}
 Quantization has become a key method for enabling deep learning (DL) inference on resource-constrained embedded systems. As the demand for privacy-preserving, low-latency, and energy-efficient artificial intelligence (AI) increases, quantization allows models to run efficiently on edge hardware by reducing the precision of weights and activations---often with minimal impact on accuracy. This survey presents a tool-centric analysis of quantization support in twelve widely used embedded artificial intelligence (eAI) frameworks, including TensorFlow Lite, PyTorch, ONNX Runtime, and vendor-specific stacks like Qualcomm's QNN and Intel's OpenVINO. We examine how each tool implements quantization across several axes: supported workflows (post-training vs.\ quantization-aware training), bit-width flexibility, execution realism (simulated vs.\ integer kernels), and quantization granularity and schemes. Our findings reveal common patterns---such as the dominance of 8-bit uniform affine quantization---and highlight key distinctions in flexibility, deployment readiness, and hardware integration. We summarize our results in a unified comparison table to guide practitioners and researchers in selecting the most appropriate tool for their deployment needs. Finally, we discuss trends such as mixed-precision quantization and speculate on future directions for eAI tooling.
 
-\textbf{Index Terms---}Quantization, TinyML, Embedded AI, Machine Learning, Deep Learning
+% \section*{Keywords}
+% Quantization; TinyML; Embedded AI; Machine Learning; Deep Learning
+
+\newpage
 
 \section{Introduction}
 \label{sec:paper_c_introduction}
@@ -297,5 +298,8 @@ Our analysis highlights the widespread adoption of uniform affine quantization--
 Despite the diversity of tooling, a clear pattern emerges: training and quantization are typically decoupled from actual integer execution. This reinforces the importance of tool interoperability and standardized quantization formats to bridge development and deployment pipelines.
 
 As eAI continues to mature, we expect future work to focus on tighter integration between training, quantization, and hardware execution. This includes expanding support for mixed-precision strategies, advancing hardware-aware quantization algorithms, and enabling model compression flows that are both transparent and hardware-adaptive. Ultimately, quantization will remain central to the design of efficient, privacy-preserving, and low-latency AI systems at the edge.
+
+\section*{Acknowledgements}
+This work is supported by the Innovation Fund Denmark for the project DIREC (9142-00001B). Additional support for the research stay at Politecnico di Milano was provided by the Danish Society of Engineers (IDA) and Thomas B. Thriges Fond.
 
 \endgroup
