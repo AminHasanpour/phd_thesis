@@ -24,7 +24,7 @@ xefa@dtu.dk
 Milano, Italy\\
 manuel.roveri@polimi.it
 
-\section{Abstract}
+\section{Abstract}\label{sec:paper-c-abstract}
 Quantization has become a key method for enabling deep learning (DL) inference on resource-constrained embedded systems. As the demand for privacy-preserving, low-latency, and energy-efficient artificial intelligence (AI) increases, quantization allows models to run efficiently on edge hardware by reducing the precision of weights and activations---often with minimal impact on accuracy. This survey presents a tool-centric analysis of quantization support in twelve widely used embedded artificial intelligence (eAI) frameworks, including TensorFlow Lite, PyTorch, ONNX Runtime, and vendor-specific stacks like Qualcomm's QNN and Intel's OpenVINO. We examine how each tool implements quantization across several axes: supported workflows (post-training vs.\ quantization-aware training), bit-width flexibility, execution realism (simulated vs.\ integer kernels), and quantization granularity and schemes. Our findings reveal common patterns---such as the dominance of 8-bit uniform affine quantization---and highlight key distinctions in flexibility, deployment readiness, and hardware integration. We summarize our results in a unified comparison table to guide practitioners and researchers in selecting the most appropriate tool for their deployment needs. Finally, we discuss trends such as mixed-precision quantization and speculate on future directions for eAI tooling.
 
 % \section*{Keywords}
@@ -33,7 +33,7 @@ Quantization has become a key method for enabling deep learning (DL) inference o
 \newpage
 
 \section{Introduction}
-\label{sec:paper_c_introduction}
+\label{sec:paper-c-introduction}
 
 AI is transforming sectors like healthcare, automotive, and consumer electronics. While cloud infrastructure supports complex DL models, the need for real-time, private, and energy-efficient inference is driving AI to the edge.
 
@@ -55,10 +55,10 @@ The key contributions of this survey are:
 
 \subsection{Organization of the Paper}
 
-The remainder of this paper is organized as follows. Section~\ref{sec:paper_c_related_work} reviews prior work related to TinyML and quantization. Section~\ref{sec:paper_c_background} provides background on quantization fundamentals, including common schemes and deployment implications. Section~\ref{sec:paper_c_methodology} describes the methodology used in selecting and analyzing the tools. Section~\ref{sec:paper_c_quantization} presents a detailed survey of quantization support in eAI toolchains. Section~\ref{sec:paper_c_discussion} discusses trends, trade-offs, provides practical recommendations, and outlines directions for future research. Finally, Section~\ref{sec:paper_c_conclusion} concludes the paper.
+The remainder of this paper is organized as follows. Section~\ref{sec:paper-c-related-work} reviews prior work related to TinyML and quantization. Section~\ref{sec:paper-c-background} provides background on quantization fundamentals, including common schemes and deployment implications. Section~\ref{sec:paper-c-methodology} describes the methodology used in selecting and analyzing the tools. Section~\ref{sec:paper-c-quantization} presents a detailed survey of quantization support in eAI toolchains. Section~\ref{sec:paper-c-discussion} discusses trends, trade-offs, provides practical recommendations, and outlines directions for future research. Finally, Section~\ref{sec:paper-c-conclusion} concludes the paper.
 
 \section{Related Work}
-\label{sec:paper_c_related_work}
+\label{sec:paper-c-related-work}
 
 \subsection{TinyML Surveys}
 Several recent surveys provide broad overviews of TinyML, its workflows, and applications on resource-constrained devices. \cite{abadade2023comprehensive} delivers a taxonomy of TinyML techniques and use cases, ranging from environmental sensing to anomaly detection, and emphasizes the critical role of model compression methods such as quantization for enabling sub-milliwatt inference on microcontrollers. \cite{capogrosso2024machine} conducts a PRISMA-driven review that categorizes TinyML workflows into ML-oriented, hardware-oriented, and co-design approaches; it covers model optimization methods (pruning, quantization, distillation) alongside state-of-the-art TinyML hardware and software stacks. \cite{rajapakse2023intelligence} focuses on ``reformable'' TinyML (i.e.\ enabling post-deployment updates) and surveys the available toolchains and benchmarks, noting that quantization remains a foundational technique for fitting deep networks in on-device memory. \cite{heydari2025tiny} underscores that the extreme memory and energy constraints on MCUs make quantization, alongside pruning and distillation, indispensable for practical deployment.
@@ -72,18 +72,18 @@ General surveys on low-precision neural networks chart the evolution of quantiza
 While numerous toolkits support quantization, there is limited literature that systematically compares these frameworks in the context of eAI deployment. Existing work tends to focus on individual tool capabilities or case-study benchmarks. For instance, several ``how-to'' guides and whitepapers describe quantization flows in TensorFlow Lite (TFLite), PyTorch, and Open Neural Network Exchange (ONNX) Runtime, but they lack comprehensive, side-by-side analyses of bit-width flexibility, real vs.\ simulated kernels, and per-layer configurability. To our knowledge, no prior survey aggregates quantization features across both research-oriented libraries and industry-grade inference engines. This gap motivates our work: a unified, tool-centric survey that delineates how each eAI framework implements quantization, covering parameter vs.\ activation coverage, post-training quantization (PTQ) vs.\ quantization-aware training (QAT) support, mixed-precision capabilities, simulated vs.\ hardware-native operations, and supported quantization schemes and bit-widths.
 
 \section{Background: Quantization Fundamentals}
-\label{sec:paper_c_background}
+\label{sec:paper-c-background}
 Quantization is a model compression technique that reduces the numerical precision of neural network weights and activations, mapping high-precision values (e.g., 32-bit floats) to lower-precision representations (e.g., 8-bit or 4-bit integers). This reduces the model's memory footprint and computational cost (enabling fast, low-power inference on edge hardware) at the expense of introducing \textit{quantization error} from rounding and clipping.
 
 In practice, quantization is often formulated as a linear (uniform) mapping: a real value $x$ is converted to an integer grid point via
 \begin{equation}
 x_{\text{int}} = \mathrm{round}(x/s) + z,
-\label{eq:quantization}
+\label{eq:paper-c-quantization}
 \end{equation}
 where the \textbf{scale} $s$ (step size) and \textbf{zero-point} $z$ are chosen per tensor or channel to cover the desired dynamic range~\cite{nagel2106white}. The integer result $x_{\text{int}}$ is then constrained to a fixed-width representation, typically within a range determined by the target \textbf{bit-width} (e.g., $[0, 255]$ for unsigned 8-bit). When values fall outside this representable range, they are clipped to the nearest bound---a process known as \textbf{clipping}. The dequantized value is then given by
 \begin{equation}
 \hat{x} = s \cdot (x_{\text{int}} - z).
-\label{eq:dequantization}
+\label{eq:paper-c-dequantization}
 \end{equation}
 This affine quantization scheme allows efficient fixed-point arithmetic. A common simplification is \textbf{symmetric quantization}, where $z = 0$ and the range is centered on zero, reducing overhead at the cost of limited range coverage~\cite{nagel2106white}.
 
@@ -99,12 +99,12 @@ We summarize several common quantization schemes:
 		\item \textbf{Extreme low-bit quantization (binary/ternary):} Constrains weights and/or activations to very small discrete sets, such as $\{+1, -1\}$ (binary) or $\{+1, 0, -1\}$ (ternary). These schemes, as used in binary neural networks (BNNs) and ternary neural networks (TNNs), offer extreme compression but require specialized training techniques (e.g., straight-through estimators) to preserve model accuracy. These schemes require special attention for implementation, since standard processors are not designed for sub-8-bit arithmetic.
 \end{itemize}
 
-The process of uniform affine quantization is illustrated in Figure~\ref{fig:quantization}. It shows how continuous real-valued inputs are mapped to discrete integer levels using a linear scaling factor and an offset (zero-point). This example features 3-bit quantization, yielding eight quantization bins. As shown, real values (green) are aligned to their closest quantization level (blue ticks), producing integer representations. Such visualizations help clarify how quantization discretizes the input space and where quantization error arises due to rounding and clipping.
+The process of uniform affine quantization is illustrated in Figure~\ref{fig:paper-c-quantization}. It shows how continuous real-valued inputs are mapped to discrete integer levels using a linear scaling factor and an offset (zero-point). This example features 3-bit quantization, yielding eight quantization bins. As shown, real values (green) are aligned to their closest quantization level (blue ticks), producing integer representations. Such visualizations help clarify how quantization discretizes the input space and where quantization error arises due to rounding and clipping.
 
 \begin{figure}[t]
 	\centerline{\includegraphics[width= 0.9\textwidth]{Pictures/Paper_quantization_survey/quantization.pdf}}
 		\caption{Illustration of uniform affine quantization. Green values represent real numbers, green circles mark example real values, blue ticks indicate quantization bins, and blue arrows show how these values are quantized. The quantization is asymmetric ($z \neq 0$), and the bitwidth is 3, resulting in $2^3$ quantization bins.}
-		\label{fig:quantization}
+		\label{fig:paper-c-quantization}
 \end{figure}
 
 Quantization schemes can also be classified by \textbf{granularity}:
@@ -131,7 +131,7 @@ A complementary technique is \textbf{mixed-precision quantization}, where differ
 In summary, quantization offers a trade-off between computational efficiency and model accuracy. The choice of scheme (e.g., uniform vs.\ power-of-two), precision (e.g., 8-bit vs.\ 4-bit), and training approach (PTQ vs.\ QAT) must be tuned based on hardware targets, toolchain support, and application-specific accuracy requirements.
 
 \section{Methodology}
-\label{sec:paper_c_methodology}
+\label{sec:paper-c-methodology}
 Our survey aims to provide a structured and tool-centric comparison of how quantization is implemented across eAI frameworks. To this end, we adopted a qualitative, documentation-driven methodology grounded in publicly available resources and hands-on inspection.
 
 \subsection{Tool Selection}
@@ -151,12 +151,12 @@ To characterize each tool's quantization support, we collected information acros
 Our primary data source was each tool's official documentation, including tutorials, specification pages, and technical references. When documentation was incomplete or ambiguous, we consulted additional resources such as open-source repositories, API definitions, code comments, and blog posts from tool maintainers. In some cases, we inferred behavior from usage patterns or implementation details when direct confirmation was unavailable.
 
 \subsection{Limitations}
-Table~\ref{tab:tools_status} details the current state of the tools at the time of writing, on which our analysis is based. Because some tools evolve rapidly, especially in terms of quantization features and hardware backend support, specific capabilities may change over time. Additionally, while we made a concerted effort to verify the accuracy of our findings, some interpretations, particularly those based on source code, may be incomplete or imprecise due to limited or undocumented behavior.
+Table~\ref{tab:paper-c-tools-status} details the current state of the tools at the time of writing, on which our analysis is based. Because some tools evolve rapidly, especially in terms of quantization features and hardware backend support, specific capabilities may change over time. Additionally, while we made a concerted effort to verify the accuracy of our findings, some interpretations, particularly those based on source code, may be incomplete or imprecise due to limited or undocumented behavior.
 
 \begin{table}[htbp]
 \centering
 \caption{The status of the studied tools at the time of writing. Plumerai and QNN Model Porting were not open-source, so we have excluded them from the table. Information for these and other tools was collected in July 2025. The number of \textit{GitHub stars} in parentheses indicates that the tool is part of a larger project, and the star count corresponds to that project. The \textit{Last update} column shows how many months have passed since the last commit of that tool on GitHub.}
-\label{tab:tools_status}
+\label{tab:paper-c-tools-status}
 \begin{tabular}{llll}
 \hline
 \textbf{Tool} & \textbf{Version} & \textbf{\makecell[l]{GitHub \\ stars}} & \textbf{\makecell[l]{Last \\ update}} \\
@@ -189,8 +189,8 @@ Despite these limitations, we believe the results offer a representative and pra
 It is worth noting that EdgeMark~\cite{hasanpour2025edgemark} offers a unified framework for supporting and benchmarking a wide range of eAI tools. In future work, we aim to extend its support for quantization methods to enable broader quantization-focused comparisons.
 
 \section{Quantization in Embedded AI Toolchains}
-\label{sec:paper_c_quantization}
-This section presents a detailed analysis of quantization support across twelve widely used eAI toolchains. For each tool, we provide a structured account of its quantization capabilities, including supported workflows (PTQ/QAT), precision and bit-width flexibility, quantization schemes, and execution behavior. A comparative summary table is provided at the end of this section (Table~\ref{tab:quantization_summary}) to enable side-by-side comparison.
+\label{sec:paper-c-quantization}
+This section presents a detailed analysis of quantization support across twelve widely used eAI toolchains. For each tool, we provide a structured account of its quantization capabilities, including supported workflows (PTQ/QAT), precision and bit-width flexibility, quantization schemes, and execution behavior. A comparative summary table is provided at the end of this section (Table~\ref{tab:paper-c-quantization-summary}) to enable side-by-side comparison.
 
 \subsection{TensorFlow Lite}
 TFLite is a lightweight framework for deploying TensorFlow models on mobile and embedded devices. It supports both PTQ and QAT (the latter via the TensorFlow Model Optimization Toolkit (TFMOT)). In typical use, TFLite quantizes both weights and activations to 8-bit integers, while keeping biases in 32-bit integer format \cite{LiteRTQuantSpec}. By default, a model is quantized in a single mode (e.g., full 8-bit or float16) for the entire network---mixed-precision per-layer is not generally exposed to the user. However, TFLite does allow some flexibility: for example, one can choose dynamic-range quantization (weights to 8-bit integer (INT8), activations remain float), full integer quantization (calibration-based INT8 for both), or FP16 quantization (weights stored as 16-bit floats). An experimental mode also supports 16-bit integer (INT16) activations with INT8 weights \cite{LiteRTOpt}.
@@ -235,7 +235,7 @@ The NNCF is Intel's toolkit (often used with OpenVINO) for model compression, in
 \setlength{\tabcolsep}{4pt}
 \begin{sidewaystable}[htbp]
 \caption{Summary of quantization capabilities of the surveyed eAI tools. The \textit{Params} in \textit{Quantizes} column include both weights and biases. In the \textit{Type} column, \textit{UA} stands for uniform affine.}
-\label{tab:quantization_summary}
+\label{tab:paper-c-quantization-summary}
 \begin{center}
 \footnotesize
 \begin{tabular}{lllllll}
@@ -272,7 +272,7 @@ NNCF & Params, Acts & Both & Yes & \makecell[l]{Fake QAT, Real PTQ \\ (via OpenV
 \endgroup
 
 \section{Discussion and Future Directions}
-\label{sec:paper_c_discussion}
+\label{sec:paper-c-discussion}
 Our survey reveals several consistent patterns and notable differences in how quantization is implemented across eAI tools. While nearly all tools support quantization of weights and activations, their treatment of biases varies. In practice, biases are often left in higher precision formats such as int32 or float32, since their memory footprint is negligible and preserving precision can improve accuracy without incurring significant cost. For example, TFLite and PyTorch's QNNPACK store biases in int32, facilitating efficient accumulation during inference. Similarly, Larq---which targets extreme low-bit quantization---keeps biases in full precision to counteract the accuracy degradation often associated with binary or ternary weights and activations.
 
 QAT is widely supported in many toolchains but is consistently implemented via simulated quantization using fake-quant operators. This is likely due to the fact that training typically occurs on GPUs, which do not natively support integer arithmetic in the low-precision formats used for inference. As a result, no surveyed tool uses real quantized kernels during training. PTQ, in contrast, is nearly ubiquitous and supported even in tools where QAT is the primary focus (e.g., even QKeras can do PTQ with a bit of effort). PTQ offers a fast and accessible pathway to deploy quantized models, but it can introduce unacceptable accuracy loss in models already near their capacity limits. In such cases, QAT serves as an effective remedy by enabling the model to adapt to quantization effects during training.
@@ -283,14 +283,14 @@ In terms of bit-width, 8-bit quantization stands out as the industry standard fo
 
 Uniform affine quantization is by far the dominant scheme across all tools. It is simple, efficient, and enjoys broad hardware support. A common pattern is to quantize weights symmetrically and activations asymmetrically, which balances representation accuracy with computational efficiency during inference. Non-uniform or nonlinear quantization schemes, such as logarithmic or clustering-based methods, may better match certain data distributions but are not widely adopted due to their complexity and poor hardware support. Binary and ternary schemes are treated as special cases and require distinct training methods and inference backends.
 
-For practitioners, tool selection is strongly influenced by the deployment target and required feature set. Production-focused engineers benefit most from frameworks that support real inference with optimized integer kernels, such as TFLite, ONNX Runtime, and vendor-specific SDKs. Researchers and experimentalists may prefer flexible tools such as QKeras, which allow fine-grained control over bit-widths, quantization styles, and training workflows. Table~\ref{tab:quantization_summary} provides a comparison that can guide users in matching tool capabilities to project requirements.
+For practitioners, tool selection is strongly influenced by the deployment target and required feature set. Production-focused engineers benefit most from frameworks that support real inference with optimized integer kernels, such as TFLite, ONNX Runtime, and vendor-specific SDKs. Researchers and experimentalists may prefer flexible tools such as QKeras, which allow fine-grained control over bit-widths, quantization styles, and training workflows. Table~\ref{tab:paper-c-quantization-summary} provides a comparison that can guide users in matching tool capabilities to project requirements.
 
 Despite the diversity of tools and devices, quantization itself is largely hardware-agnostic. A standard like 8-bit uniform affine quantization serves as a ``push-button'' compression technique applicable across platforms, providing a compelling case for standardizing quantization as a distinct preprocessing step. Such unification would allow model developers to quantize once and deploy across a variety of hardware backends, each executing the quantized model using its own optimized kernels.
 
 Looking ahead, several trends point to the increasing relevance of mixed-precision quantization. As AI accelerators evolve to support various bit lengths and as quantization algorithms become more sophisticated, mixed-precision workflows are poised to offer new levels of efficiency without compromising accuracy. Some tools already support mixed-precision training or export, and broader support is expected to follow. We anticipate that mixed-precision quantization will become more popular in the future, particularly as the boundaries between training, quantization, and deployment become more fluid and tightly integrated.
 
 \section{Conclusion}
-\label{sec:paper_c_conclusion}
+\label{sec:paper-c-conclusion}
 Quantization has emerged as a key enabler for deploying DL models on resource-constrained embedded systems, striking a balance between accuracy, model size, and computational efficiency. In this survey, we provided a structured overview of how quantization is implemented across twelve widely-used eAI toolchains, encompassing both research-focused libraries and production-grade inference engines.
 
 Our analysis highlights the widespread adoption of uniform affine quantization---particularly 8-bit integer formats---as a practical standard across platforms. While support for PTQ is nearly universal, QAT is increasingly adopted to preserve model accuracy, especially under aggressive quantization regimes. We also observe a growing interest in mixed-precision and ultra-low-bit quantization, though their deployment is currently limited to specialized tools or custom hardware targets like FPGAs.

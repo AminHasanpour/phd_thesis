@@ -1,5 +1,7 @@
 \chapter{Paper B: EdgeMark: An automation and benchmarking system for embedded artificial intelligence tools}\label{ch:paper-b-edgemark}
 
+\begingroup
+
 % Local helpers
 \newcommand{\rv}[1]{#1}
 \newcommand{\resultswidth}{0.75\textwidth}
@@ -35,7 +37,7 @@ mik@ece.au.dk
 Kgs. Lyngby, 2800, Denmark\\
 xefa@dtu.dk
 
-\section{Abstract}
+\section{Abstract}\label{sec:paper-b-abstract}
 
 The integration of \gls{ai} into embedded devices, a paradigm known as \gls{eai} or \gls{tinyml}, is transforming industries by enabling intelligent data processing at the edge. However, the many tools available in this domain leave researchers and developers wondering which one is best suited to their needs. This paper provides a review of existing \gls{eai} tools, highlighting their features, trade-offs, and limitations. Additionally, we introduce EdgeMark, an open-source automation system designed to streamline the workflow for deploying and benchmarking \gls{ml} models on embedded platforms. EdgeMark simplifies model generation, optimization, conversion, and deployment while promoting modularity, reproducibility, and scalability. Experimental benchmarking results showcase the performance of widely used \gls{eai} tools, including \gls{tflm}, Edge Impulse, Ekkono, and Renesas eAI Translator, across a wide range of models, revealing insights into their relative strengths and weaknesses. The findings provide guidance for researchers and developers in selecting the most suitable tools for specific application requirements, while EdgeMark lowers the barriers to adoption of \gls{eai} technologies.
 
@@ -62,7 +64,7 @@ The integration of \gls{ai} into embedded devices, a paradigm known as \gls{eai}
 \newpage
 
 \section{Introduction}
-\label{sec:introduction}
+\label{sec:paper-b-introduction}
 
 \Gls{ai} is revolutionizing how systems process, analyze, and act on data. While historically rooted in cloud computing, the need for faster, more secure, and localized \gls{ai} processing has driven the rise of \gls{eai}. Unlike conventional \gls{ai}, \gls{eai} processes data at the device level, transforming devices into standalone intelligent systems. This shift enables a wide range of applications, from smart home devices and wearables to industrial automation and healthcare \cite{Tsoukas2024}.
 
@@ -79,10 +81,10 @@ Beyond individual tools, deploying \gls{ml} models on embedded devices typically
 
 Through the combination of these contributions, we aim to not only contextualize the current capabilities of \gls{eai} tools but also provide practical guidance and help for deploying ML models on embedded systems. By facilitating modularity, scalability, and reproducibility, EdgeMark represents an important step toward addressing the challenges of \gls{eai} deployment and paving the way for the next wave of intelligent applications at the edge.
 
-The remainder of this paper is organized as follows. Section \ref{sec:related_work} provides an overview of related works. Section \ref{sec:eAI_tools} discusses the key features, functionality, and limitations of \gls{eai} tools. In Section \ref{sec:automation}, we describe the automation system developed to streamline the use of these tools, including its architecture and use cases. Section \ref{sec:benchmark} outlines the benchmarking methodology and presents experimental results comparing the performance of the tools across multiple parameters. Finally, Section \ref{sec:conclusion} concludes the paper by summarizing the contributions and proposing directions for future work.
+The remainder of this paper is organized as follows. Section \ref{sec:paper-b-related_work} provides an overview of related works. Section \ref{sec:paper-b-eAI_tools} discusses the key features, functionality, and limitations of \gls{eai} tools. In Section \ref{sec:paper-b-automation}, we describe the automation system developed to streamline the use of these tools, including its architecture and use cases. Section \ref{sec:paper-b-benchmark} outlines the benchmarking methodology and presents experimental results comparing the performance of the tools across multiple parameters. Finally, Section \ref{sec:paper-b-conclusion} concludes the paper by summarizing the contributions and proposing directions for future work.
 
 \section{Related Work}
-\label{sec:related_work}
+\label{sec:paper-b-related_work}
 
 \rv{\textbf{Review of eAI tools:}} While many \gls{tinyml} surveys are not specifically focused on \gls{eai} tools, they often include these tools as part of their review \cite{Tsoukas2024, Immonen2022, Njor2024, Sanchez2020, Ray2022, Saha2022, Capogrosso2024, Abadade2023}. These surveys typically provide a brief overview of available tools, covering many important ones but lacking completeness. Given the rapid evolution of the field, some information happens to be missing or becomes outdated. \rv{In response, our work presents a more thorough and current review of ten eAI tools, highlighting their features, advantages, and limitations.}
 % We have avoided using \gls{eai} in the previous sentence for the highligting purpose
@@ -91,14 +93,14 @@ The remainder of this paper is organized as follows. Section \ref{sec:related_wo
 
 Several studies have compared popular \gls{eai} tools. For instance, \cite{Osman2022} examines the performance of \gls{tflm} and STM32Cube.AI on a few of models, concluding that STM32Cube.AI outperforms \gls{tflm} but is limited to STM32 devices, whereas \gls{tflm} offers broader flexibility. In \cite{Wulfert2024}, the creators of AIfES compare its performance against \gls{tflm}, showing that AIfES outperforms \gls{tflm}, particularly on \gls{fc} models. Similarly, \cite{MLonMCU} contrasts the interpreter and non-interpreter versions of \gls{tflm} with microTVM. This work also introduces a third backend for \gls{tvm} that optimizes RAM usage through \gls{usmp} and runtime improvements. Although these studies provide valuable insights, they generally focus on comparing two tools within constrained test environments, falling short of offering a comprehensive evaluation.
 
-\rv{In contrast, EdgeMark offers a more extensive and systematic evaluation of eAI tools. By managing the entire workflow, it ensures consistent testing conditions, allowing for fair comparisons between tools. This enables benchmarking across a diverse set of models, from very small to relatively large, and across multiple tools. Benchmarking results are discussed in Section} \ref{sec:benchmark}.
+\rv{In contrast, EdgeMark offers a more extensive and systematic evaluation of eAI tools. By managing the entire workflow, it ensures consistent testing conditions, allowing for fair comparisons between tools. This enables benchmarking across a diverse set of models, from very small to relatively large, and across multiple tools. Benchmarking results are discussed in Section} \ref{sec:paper-b-benchmark}.
 % We have avoided using \gls{eai} in the previous sentence for the highligting purpose
 
 \rv{\textbf{Automation of eAI tools:}} Few works address the automation of benchmarking systems for \gls{tinyml}. In \cite{MLonMCU}, the authors implement automation to a certain extent, allowing them to conduct numerous comparisons within a short timeframe. \cite{Baciu2024} adopts this principle at its core but focuses more on traditional \gls{ml} models and tools. Nevertheless, the need for a comprehensive automation system capable of handling the entire workflow for deploying \gls{ml} models on embedded devices remains evident. \rv{To address this gap, EdgeMark is designed as a modular and scalable solution that automates both deployment and benchmarking of eAI tools.}
 % We have avoided using \gls{eai} in the previous sentence for the highligting purpose
 
 \section{eAI Tools}
-\label{sec:eAI_tools}
+\label{sec:paper-b-eAI_tools}
 
 \Gls{ai} models are commonly represented in high-level formats such as \tf{}, PyTorch, or ONNX. While these formats facilitate model development, they are not always ideal for deployment on resource-constrained devices. This is because they are designed with rich interpreters in mind and include numerous features that embedded systems might not support efficiently. Therefore, \gls{ai} models must be converted to formats that are optimized for execution on the target device. Additionally, there may be opportunities for optimizing model execution specific to the hardware.
 
@@ -148,7 +150,7 @@ The tool is compatible with a wide range of microcontroller families, including 
 One notable feature of eAI Translator is its user-friendly interface, which simplifies the model conversion process. Users can decide whether to prioritize execution speed or RAM usage, a choice that determines how model parameters are allocated in either RAM or ROM. This flexibility allows users to execute small models even faster by storing them in RAM.
 
 \subsection{Ekkono}
-\label{subsec:ekkono}
+\label{subsec:paper-b-ekkono}
 Founded in 2016, Ekkono \cite{Ekkono} is a Swedish company that offers a platform for developing and deploying \gls{ml} models on embedded devices. A unique feature of Ekkono is its on-device learning capability, which sets it apart from many other tools. This feature allows models to adapt to their environment and improve their accuracy over time. While the computational and memory costs of this technique might raise some concerns, its potential to enable new applications at the edge is undeniable.
 
 Unlike most tools that take in pretrained models in formats such as \tf{}, ONNX, or TFLite, Ekkono requires users to develop and train models directly within its platform. This necessitates learning the Ekkono-specific model development process. Ekkono Primer is their main software library to develop models. Once models are developed, they can be deployed to edge devices using either Ekkono Edge or Ekkono Crystal.
@@ -181,13 +183,13 @@ We have identified approximately 50 tools related to \gls{eai}. In addition to t
 \subsection{Summary}
 
 % gls' avoided in the following paragraph for the highlighting purpose: eai, ml, dl
-\rv{Table} \ref{tab:tools} \rv{presents a summary of key features found in several prominent eAI tools. It includes details such as the tool's developer, release year, input and output formats, supported models, hardware compatibility, interpretability, licensing, on-device learning capabilities, and ease of use. In the \textit{Model} column, \textit{ML} is a general term that typically includes \textit{DL}. For the \textit{Hardware} column, \textit{kB}, \textit{MB}, or \textit{GB} roughly indicates the RAM size of the target device, while other entries more specifically indicate the target device. The \textit{ease of use} rating reflects the authors' subjective evaluation, which may be based on available tutorials, documentation, demos, or limited hands-on testing, rather than extensive practical experience.}
+\rv{Table} \ref{tab:paper-b-tools} \rv{presents a summary of key features found in several prominent eAI tools. It includes details such as the tool's developer, release year, input and output formats, supported models, hardware compatibility, interpretability, licensing, on-device learning capabilities, and ease of use. In the \textit{Model} column, \textit{ML} is a general term that typically includes \textit{DL}. For the \textit{Hardware} column, \textit{kB}, \textit{MB}, or \textit{GB} roughly indicates the RAM size of the target device, while other entries more specifically indicate the target device. The \textit{ease of use} rating reflects the authors' subjective evaluation, which may be based on available tutorials, documentation, demos, or limited hands-on testing, rather than extensive practical experience.}
 
 \begingroup
 \renewcommand\arraystretch{1.5}
 \begin{sidewaystable}[htbp]
   \caption{\rv{Important features of eAI tools.}}
-  \label{tab:tools}
+  \label{tab:paper-b-tools}
   \begin{center}
     \small
     \begin{threeparttable}
@@ -237,7 +239,7 @@ Major hardware vendors and prominent tech companies have each developed at least
 An ideal tool should give users maximum flexibility, allowing them to bring their own models from popular frameworks, quickly create models from scratch within the tool, or provide data for the tool to automatically discover the best models. \Gls{nas}, when designed to account for hardware performance metrics, is a valuable feature for identifying optimal models \cite{howard2019searching, cai2019once, gambella2022cnas, lomurno2024pomonag}. In addition to quantization, other optimization techniques, currently absent in most tools, should be considered. These include structured pruning for general use cases, unstructured pruning for accelerators that support it, neuron merging \cite{liu2021deep}, knowledge distillation \cite{hinton2015distilling}, and early exit networks \cite{ghanathe2022t}. The tool should also support a wide range of models and hardware platforms. On-device learning, supported by techniques specifically designed to minimize resource requirements \cite{song2022, pavan2024tybox, ren2021tinyol}, can play a key role in enabling \gls{eai} to expand into many new applications. Finally, the tool should be user-friendly, offering a simple and intuitive interface along with detailed documentation and tutorials.
 
 \section{Automation of eAI Tools}
-\label{sec:automation}
+\label{sec:paper-b-automation}
 
 Deploying \gls{ml} models on embedded devices typically involves several steps, such as model generation, optimization, conversion, and deployment, which we refer to as function blocks. Each step can be time-consuming and rigorous, especially when managing multiple models or devices. This process is further complicated by the limited resources available on embedded devices, which demand careful consideration of the model's performance metrics and might necessitate multiple iterations of this workflow. To address these challenges, we propose EdgeMark, an open-source automation system that streamlines the deployment of \gls{ml} models on embedded devices.
 
@@ -246,10 +248,10 @@ Deploying \gls{ml} models on embedded devices typically involves several steps, 
 
 \rv{This system is used, for example, in} \cite{Hasanpour2024} \rv{to quickly generate and evaluate models on a microcontroller, helping to find an efficient model. This work also revealed a potential gap between the estimated performance of models and their actual performance on the target device.}
 
-EdgeMark follows a modular design that encompasses the entire pipeline of the aforementioned function blocks. Currently, EdgeMark includes modules whose correspondence to each function block is illustrated in Table~\ref{tab:modules_vs_function_blocks} and Fig.~\ref{fig:EdgeMark_modules}. These modules are:
+EdgeMark follows a modular design that encompasses the entire pipeline of the aforementioned function blocks. Currently, EdgeMark includes modules whose correspondence to each function block is illustrated in Table~\ref{tab:paper-b-modules_vs_function_blocks} and Fig.~\ref{fig:paper-b-EdgeMark_modules}. These modules are:
 \begin{itemize}
     \item \textbf{Generate TF Models:} Generates, compiles, trains, and evaluates \tf{} models based on user-provided configuration files.
-    \item \textbf{Generate Ekkono Models:} As discussed in Section \ref{subsec:ekkono}, Ekkono models require users to operate in a specific environment with a different workflow. This module simplifies the process by combining generation, training, evaluation, and conversion into a single step. It uses the same configuration files as the \textit{Generate TF Models} module and primarily produces Ekkono Edge and Ekkono Crystal models.
+    \item \textbf{Generate Ekkono Models:} As discussed in Section \ref{subsec:paper-b-ekkono}, Ekkono models require users to operate in a specific environment with a different workflow. This module simplifies the process by combining generation, training, evaluation, and conversion into a single step. It uses the same configuration files as the \textit{Generate TF Models} module and primarily produces Ekkono Edge and Ekkono Crystal models.
     \item \textbf{Convert to TFLite:} This module converts \tf{} models to \gls{tflite} format, offering various optimization options during the conversion process.
     \item \textbf{Convert to TFLM:} Converts \gls{tflite} models into the \gls{tflm} format, generating C++ code for deployment.
     \item \textbf{Convert to Edge Impulse:} This module converts \gls{tflite} models into the Edge Impulse format, also resulting in C++ code.
@@ -257,7 +259,7 @@ EdgeMark follows a modular design that encompasses the entire pipeline of the af
     \item \textbf{Test on NUCLEO-L4R5ZI:} This module enables testing of \gls{tflm}, Edge Impulse, and Ekkono models on the NUCLEO-L4R5ZI board. The respective project will be compiled and flashed to the board. The results will be collected, analyzed, and presented to the user.
     \item \textbf{Test on RenesasRX65N:} This module functions similar to \textit{Test on NUCLEO-L4R5ZI}, but is modified for the Renesas RX65N board.
 \end{itemize}
-The modules are interconnected, as shown in Figure \ref{fig:EdgeMark_modules}. This modular design offers several advantages. First, it allows users to select only the modules relevant to their specific application, making the system more flexible. For example, if a user is only interested in generating and converting models to TFLite, they can use the \textit{Generate TF Models} and \textit{Convert to TFLite} modules. \rv{It is important to note that the modules must be used in the correct order as illustrated in the figure.} Second, it makes the system easily extendable to support new models, tools, or devices. For instance, support for STM32Cube.AI can be added by introducing a new module in the \textit{Conversion} block.
+The modules are interconnected, as shown in Figure \ref{fig:paper-b-EdgeMark_modules}. This modular design offers several advantages. First, it allows users to select only the modules relevant to their specific application, making the system more flexible. For example, if a user is only interested in generating and converting models to TFLite, they can use the \textit{Generate TF Models} and \textit{Convert to TFLite} modules. \rv{It is important to note that the modules must be used in the correct order as illustrated in the figure.} Second, it makes the system easily extendable to support new models, tools, or devices. For instance, support for STM32Cube.AI can be added by introducing a new module in the \textit{Conversion} block.
 
 % gls' avoided in the following paragraph for the highligting purpose: tflm
 \rv{EdgeMark supports TFLM due to its popularity in deploying models on microcontrollers. Similarly, Edge Impulse has been integrated for its extensive features, flexibility, and user-friendly interface. Ekkono is also included in our suite for its lightweight library and unique on-device learning capability, which sets it apart in the field. To ensure a comprehensive comparison of performance, we have included Renesas eAI Translator. This allows us to evaluate general tools like TFLM, which may have a bias toward ARM Cortex-M processors, against more vendor-specific solutions.}
@@ -281,7 +283,7 @@ The modules are interconnected, as shown in Figure \ref{fig:EdgeMark_modules}. T
       \textit{Test on Renesas RX65N} & & & & \cmark \\
       \multicolumn{5}{l}{\makecell[l]{\rule{0pt}{7mm}* While this module converts the model into a format suitable \\ for devices like mobile phones, it cannot be directly used with \\ devices supported by EdgeMark.}}
     \end{tabular}
-    \label{tab:modules_vs_function_blocks}
+    \label{tab:paper-b-modules_vs_function_blocks}
   \end{center}
 \end{table}
 
@@ -289,12 +291,12 @@ The modules are interconnected, as shown in Figure \ref{fig:EdgeMark_modules}. T
   \centering
   \includegraphics{Pictures/Paper_edgemark/EdgeMark_modules_vertical_Helvetica.pdf}
   \caption{\rv{EdgeMark modules and their interconnections.}}
-  \label{fig:EdgeMark_modules}
+  \label{fig:paper-b-EdgeMark_modules}
 \end{figure}
 
 Running the main script will display the project's main menu where users can select the set of modules they wish to execute. EdgeMark runs the selected modules sequentially, storing their outputs for subsequent modules and for user reference. The primary output from the final layer of the workflow includes the execution time, flash size, RAM usage, and deployment error of the model on the target device. Additionally, the system generates a report summarizing the workflow results.
 
-If generation of models is a part of the selected modules, users need to provide configuration files written in YAML format. These files detail the model architecture, dataset, and specific hyperparameters. Code Snippet~\ref{code:config_file} is an example configuration file. In this example, each element of \texttt{convs\_params} is a list of three integers that define the number of channels, kernel size, and stride, respectively. A zero in the number of channels indicates a max-pooling layer, and if the kernel size is also zero, it represents a global average pooling layer. The \texttt{denses\_params} specifies the number of neurons in each dense layer. The model's output neurons and the loss function will be automatically set based on the dataset. \rv{While this configuration scheme supports a broad spectrum of common model architectures, users with more specialized or unsupported designs can still integrate custom models into EdgeMark thanks to its extensible design.}
+If generation of models is a part of the selected modules, users need to provide configuration files written in YAML format. These files detail the model architecture, dataset, and specific hyperparameters. Code Snippet~\ref{code:paper-b-config_file} is an example configuration file. In this example, each element of \texttt{convs\_params} is a list of three integers that define the number of channels, kernel size, and stride, respectively. A zero in the number of channels indicates a max-pooling layer, and if the kernel size is also zero, it represents a global average pooling layer. The \texttt{denses\_params} specifies the number of neurons in each dense layer. The model's output neurons and the loss function will be automatically set based on the dataset. \rv{While this configuration scheme supports a broad spectrum of common model architectures, users with more specialized or unsupported designs can still integrate custom models into EdgeMark thanks to its extensible design.}
 
 % Define a new float type for code snippets
 \newfloat{code}{htbp}{lop}
@@ -327,10 +329,10 @@ dataset:
 random_seed: 42
 \end{lstlisting}
 \caption{Example of a user-defined configuration file for generating a CNN model.}
-\label{code:config_file}
+\label{code:paper-b-config_file}
 \end{code}
 
-EdgeMark currently supports various models, such as \gls{fc}, \gls{cnn}, and \gls{rnn}, along with specialized models like MLPerf Tiny models. The system includes datasets like MNIST, CIFAR-10, ImageNet-V2, Visual Wake Words, Boston Housing, and more. In addition to \gls{tflite} conversion, users can choose among \gls{tflm}, Edge Impulse, Ekkono, and Renesas eAI Translator for converting models to source code. The models can be tested on NUCLEO-L4R5ZI and Renesas RX65N boards. The complete list of supported models, datasets, tools, and hardware is presented in Table~\ref{tab:EdgeMark_support_range}. It is important to note that, EdgeMark is designed for easy extensibility, allowing new models, datasets, tools, and devices to be incorporated with minimal effort.
+EdgeMark currently supports various models, such as \gls{fc}, \gls{cnn}, and \gls{rnn}, along with specialized models like MLPerf Tiny models. The system includes datasets like MNIST, CIFAR-10, ImageNet-V2, Visual Wake Words, Boston Housing, and more. In addition to \gls{tflite} conversion, users can choose among \gls{tflm}, Edge Impulse, Ekkono, and Renesas eAI Translator for converting models to source code. The models can be tested on NUCLEO-L4R5ZI and Renesas RX65N boards. The complete list of supported models, datasets, tools, and hardware is presented in Table~\ref{tab:paper-b-EdgeMark_support_range}. It is important to note that, EdgeMark is designed for easy extensibility, allowing new models, datasets, tools, and devices to be incorporated with minimal effort.
 
 \begin{table}[htbp]
   \caption{EdgeMark support range for models, datasets, tools, and hardware.}
@@ -368,7 +370,7 @@ EdgeMark currently supports various models, such as \gls{fc}, \gls{cnn}, and \gl
       \multirow{2}{*}{\textbf{Hardware}} & STM & NUCLEO-L4R5ZI \\ \cline{2-3}
       & Renesas & RX65N \\ \hline
     \end{tabular}
-    \label{tab:EdgeMark_support_range}
+    \label{tab:paper-b-EdgeMark_support_range}
   \end{center}
 \end{table}
 
@@ -387,11 +389,11 @@ The \textit{Convert to TFLite} module is responsible for transforming \tf{} mode
 
 The initial memory estimation is based on the maximum memory demand of consecutive model layers. Specifically, it considers the sum of the output sizes of two consecutive layers that must coexist in memory, assuming no branching in the model architecture. This estimation provides a starting point for the search process.
 
-To accurately determine the minimum arena size, we implement a search algorithm, a simplified version of which is outlined in Algorithm \ref{alg:min_arena_size}. The algorithm refines the arena size in increments determined by a resolution of 0.5, 1, or 2 kB, depending on the estimated value. While the initial estimate is expected to be close to the actual minimum in most cases, significant deviations can occur in certain scenarios. During experiments, the growth and shrinking parameters of the algorithm can be fine-tuned to accelerate convergence and improve efficiency in finding the optimal arena size.
+To accurately determine the minimum arena size, we implement a search algorithm, a simplified version of which is outlined in Algorithm \ref{alg:paper-b-min_arena_size}. The algorithm refines the arena size in increments determined by a resolution of 0.5, 1, or 2 kB, depending on the estimated value. While the initial estimate is expected to be close to the actual minimum in most cases, significant deviations can occur in certain scenarios. During experiments, the growth and shrinking parameters of the algorithm can be fine-tuned to accelerate convergence and improve efficiency in finding the optimal arena size.
 
 \begin{algorithm*}
 \caption{Find Minimum Arena Size}
-\label{alg:min_arena_size}
+\label{alg:paper-b-min_arena_size}
 \begin{algorithmic}[1]
   \State growth\_rate $\gets$ 1.25
   \State shrink\_rate $\gets$ 0.8
@@ -446,11 +448,11 @@ To deploy these models on target devices, generic C/C++ projects are prepared fo
 \end{itemize}
 
 \section{Benchmark of eAI Tools}
-\label{sec:benchmark}
+\label{sec:paper-b-benchmark}
 
 To evaluate the performance of the \gls{eai} tools, we conducted a series of experiments using EdgeMark. Additionally, we analyzed the impact of various factors, such as different quantization schemes and the presence of a \gls{fpu}. In total, we have performed thousands of tests, with each test taking an average of two to three minutes to complete, the majority of which was spent on cross-compilation\footnote{The cross-compilation was done on a machine with an Intel Core i7-11850H CPU.} and flashing the project to the boards.
 
-EdgeMark employs several tools and platforms to accomplish its objective. Table~\ref{tab:tools_versions} summarizes their versions and purposes as used in the benchmark. Among these, STM32CubeIDE, STM32CubeCLT, Renesas e2 studio, and Renesas Flash Programmer, must be installed manually if the relevant modules are used. Additionally, an Edge Impulse account is necessary to utilize its corresponding module.
+EdgeMark employs several tools and platforms to accomplish its objective. Table~\ref{tab:paper-b-tools_versions} summarizes their versions and purposes as used in the benchmark. Among these, STM32CubeIDE, STM32CubeCLT, Renesas e2 studio, and Renesas Flash Programmer, must be installed manually if the relevant modules are used. Additionally, an Edge Impulse account is necessary to utilize its corresponding module.
 
 \begin{table}[htbp]
   \caption{Tools and Platforms Used in EdgeMark}
@@ -480,35 +482,35 @@ EdgeMark employs several tools and platforms to accomplish its objective. Table~
       \makecell[l]{Renesas \\ Flash Programmer} & 3.15.00 & Flashing projects to the board \\
       \hline
     \end{tabular}
-    \label{tab:tools_versions}
+    \label{tab:paper-b-tools_versions}
   \end{center}
 \end{table}
 
 For both \glspl{ide}, STM32CubeIDE and Renesas e2 studio, the projects were created using default settings, with the exception of the compiler optimizations, which were set to their maximum level. To execute \gls{tflm} models on the NUCLEO-L4R5ZI board, we integrated the CMSIS-NN library, which significantly accelerates the performance of 8-bit and 16-bit integer quantized models by leveraging the SIMD instructions of the ARM Cortex-M4 processor. Renesas has also provided a CMSIS-NN library optimized for their RX microcontrollers, which we have used to execute eAI Translator models on the Renesas RX65N board.
 
 \subsection{Models}
-\label{sec:models}
-We selected a wide range of models to ensure a comprehensive evaluation of the tools' capabilities. These include 11 \gls{fc} models, 7 \gls{cnn} models, 7 \gls{rnn} models, and 4 models taken from the MLPerf Tiny benchmark. As illustrated in Fig.~\ref{fig:FC_CNN_stats}, the \gls{fc} and \gls{cnn} models are well distributed across a range of parameters and \glspl{mac}, ensuring that our evaluation covers both lightweight and computationally intensive models.
+\label{sec:paper-b-models}
+We selected a wide range of models to ensure a comprehensive evaluation of the tools' capabilities. These include 11 \gls{fc} models, 7 \gls{cnn} models, 7 \gls{rnn} models, and 4 models taken from the MLPerf Tiny benchmark. As illustrated in Fig.~\ref{fig:paper-b-FC_CNN_stats}, the \gls{fc} and \gls{cnn} models are well distributed across a range of parameters and \glspl{mac}, ensuring that our evaluation covers both lightweight and computationally intensive models.
 
 \begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/FC_stats.pdf}
-    \label{fig:FC_stats}
+    \label{fig:paper-b-FC_stats}
   \end{subfigure}
   % \hfill % Optional: add some horizontal spacing
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/CNN_stats.pdf}
-    \label{fig:CNN_stats}
+    \label{fig:paper-b-CNN_stats}
   \end{subfigure}
   \caption{Number of parameters and MACs for \gls{fc} and \gls{cnn} models.}
-  \label{fig:FC_CNN_stats}
+  \label{fig:paper-b-FC_CNN_stats}
 \end{figure}
 
 \textit{FC 0} serves as a minimal baseline, with an input size of 1, an output size of 1, and no hidden layers. It can be useful for analyzing the overhead of the library executing the model. Similarly, in the \gls{rnn} category, \textit{Simple 0}, which has the minimal structure of an \gls{rnn}, plays an analogous role. However, because \gls{rnn} models involve more complex operations, \textit{Simple 0} is much more demanding compared to \textit{FC 0}.
 
-The \gls{rnn} models include five SimpleRNNs, one LSTM, and one GRU. All \gls{rnn} models process sequence lengths of 100, except for \textit{Simple 0}, which operates on a sequence length of 2. Two of the SimpleRNN-based models are \textit{Shakespeare 1} and \textit{Shakespeare 2} models that have an embedding layer before their \gls{rnn} units and are trained on the \texttt{tiny\_shakespeare} dataset \cite{Karpathy2015}. Detailed information about the \gls{rnn} models is presented in Table~\ref{tab:RNN_stats}.
+The \gls{rnn} models include five SimpleRNNs, one LSTM, and one GRU. All \gls{rnn} models process sequence lengths of 100, except for \textit{Simple 0}, which operates on a sequence length of 2. Two of the SimpleRNN-based models are \textit{Shakespeare 1} and \textit{Shakespeare 2} models that have an embedding layer before their \gls{rnn} units and are trained on the \texttt{tiny\_shakespeare} dataset \cite{Karpathy2015}. Detailed information about the \gls{rnn} models is presented in Table~\ref{tab:paper-b-RNN_stats}.
 
 \begin{table}[htbp]
   \caption{Details of \gls{rnn} Models}
@@ -532,11 +534,11 @@ The \gls{rnn} models include five SimpleRNNs, one LSTM, and one GRU. All \gls{rn
       GRU & 64 & 32 & 20,896 & 2,094,400 \\
       \hline
     \end{tabular}
-    \label{tab:RNN_stats}
+    \label{tab:paper-b-RNN_stats}
   \end{center}
 \end{table}
 
-Lastly, Table~\ref{tab:MLPerf_stats} provides an overview of the MLPerf Tiny models used in this evaluation. By including this wide range of models, we aim to provide meaningful insights into the performance and efficiency of the tools across different neural network architectures.
+Lastly, Table~\ref{tab:paper-b-MLPerf_stats} provides an overview of the MLPerf Tiny models used in this evaluation. By including this wide range of models, we aim to provide meaningful insights into the performance and efficiency of the tools across different neural network architectures.
 
 \begin{table}[htbp]
   \caption{Details of MLPerf Tiny Models}
@@ -554,12 +556,12 @@ Lastly, Table~\ref{tab:MLPerf_stats} provides an overview of the MLPerf Tiny mod
       MobileNet & 221,794 & 7,606,598 & Image classification \\
       \hline
     \end{tabular}
-    \label{tab:MLPerf_stats}
+    \label{tab:paper-b-MLPerf_stats}
   \end{center}
 \end{table}
 
 \subsection{Experiments}
-We have structured our analysis into ten experiments, five of which are described in this section, with the remaining five detailed in \ref{sec:appendix}. It is worth emphasizing that each experiment is designed to compare the general behavior of the test subjects, though there may be some exceptional cases that deviate from the trends. For a comprehensive overview of the results, readers are encouraged to refer to the project's documentation\footnote{\href{https://black3rror.github.io/EdgeMark}{https://black3rror.github.io/EdgeMark}}.
+We have structured our analysis into ten experiments, five of which are described in this section, with the remaining five detailed in \ref{sec:paper-b-appendix}. It is worth emphasizing that each experiment is designed to compare the general behavior of the test subjects, though there may be some exceptional cases that deviate from the trends. For a comprehensive overview of the results, readers are encouraged to refer to the project's documentation\footnote{\href{https://black3rror.github.io/EdgeMark}{https://black3rror.github.io/EdgeMark}}.
 
 In general, each experiment focuses on the following discussion points: \textit{Model correctness}, which examines whether any models failed to execute or produced unacceptable deployment errors; \textit{execution time}, \textit{flash size}, and \textit{RAM usage}, which provide comparative insights into the respective metrics across study elements; and, finally, a \textit{conclusion} that summarizes the overall performance and behavior of the subjects under consideration.
 
@@ -581,16 +583,16 @@ In this study, we evaluate the performance of several quantization schemes using
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_fc_error.pdf}
     \caption{\Gls{fc} models.}
-    \label{fig:study_quants_fc_error}
+    \label{fig:paper-b-study_quants_fc_error}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_cnn_error.pdf}
     \caption{\Gls{cnn} models.}
-    \label{fig:study_quants_cnn_error}
+    \label{fig:paper-b-study_quants_cnn_error}
   \end{subfigure}
   \caption{Deployment error across various quantization schemes. The models were tested on NUCLEO-L4R5ZI.}
-  \label{fig:study_quants_error}
+  \label{fig:paper-b-study_quants_error}
 \end{figure}
 
 \begin{figure}[tbp]
@@ -598,16 +600,16 @@ In this study, we evaluate the performance of several quantization schemes using
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_fc_exe.pdf}
     \caption{\Gls{fc} models.}
-    \label{fig:study_quants_fc_exe}
+    \label{fig:paper-b-study_quants_fc_exe}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_cnn_exe.pdf}
     \caption{\Gls{cnn} models.}
-    \label{fig:study_quants_cnn_exe}
+    \label{fig:paper-b-study_quants_cnn_exe}
   \end{subfigure}
   \caption{Average execution time across various quantization schemes. The models were tested on NUCLEO-L4R5ZI.}
-  \label{fig:study_quants_exe}
+  \label{fig:paper-b-study_quants_exe}
 \end{figure}
 
 \begin{figure}[tbp]
@@ -615,44 +617,44 @@ In this study, we evaluate the performance of several quantization schemes using
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_fc_flash.pdf}
     \caption{\Gls{fc} models.}
-    \label{fig:study_quants_fc_flash}
+    \label{fig:paper-b-study_quants_fc_flash}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_cnn_flash.pdf}
     \caption{\Gls{cnn} models.}
-    \label{fig:study_quants_cnn_flash}
+    \label{fig:paper-b-study_quants_cnn_flash}
   \end{subfigure}
   \caption{Flash memory usage for various quantization schemes. The models were tested on NUCLEO-L4R5ZI.}
-  \label{fig:study_quants_flash}
+  \label{fig:paper-b-study_quants_flash}
 \end{figure}
 
 \begin{figure}[tbp]
   \centering
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_fc_ram.pdf}
-    \label{fig:study_quants_fc_ram}
+    \label{fig:paper-b-study_quants_fc_ram}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_quants_cnn_ram.pdf}
-    \label{fig:study_quants_cnn_ram}
+    \label{fig:paper-b-study_quants_cnn_ram}
   \end{subfigure}
   \caption{RAM usage across various quantization schemes. The models were tested on NUCLEO-L4R5ZI.}
-  \label{fig:study_quants_ram}
+  \label{fig:paper-b-study_quants_ram}
 \end{figure}
 
-To perform the evaluation, we tested the \gls{fc} and \gls{cnn} models on the two available boards. Figures~\ref{fig:study_quants_error}--\ref{fig:study_quants_ram} compare these setups in terms of deployment error, execution time, flash size, and RAM usage on the STM board.
+To perform the evaluation, we tested the \gls{fc} and \gls{cnn} models on the two available boards. Figures~\ref{fig:paper-b-study_quants_error}--\ref{fig:paper-b-study_quants_ram} compare these setups in terms of deployment error, execution time, flash size, and RAM usage on the STM board.
 \begin{itemize}
   \item \textbf{Model correctness:}
   \begin{itemize}
-    \item We recommend avoiding using \textit{dynamic} quantization since it lacks proper support (evidenced by missing data points and high error rates in Fig.~\ref{fig:study_quants_error}). Models using this scheme often fail to run or exhibit unacceptably high errors. Even when deployment succeeds, it does not outperform other quantization schemes in any metric.
+    \item We recommend avoiding using \textit{dynamic} quantization since it lacks proper support (evidenced by missing data points and high error rates in Fig.~\ref{fig:paper-b-study_quants_error}). Models using this scheme often fail to run or exhibit unacceptably high errors. Even when deployment succeeds, it does not outperform other quantization schemes in any metric.
     \item During this and some other experiments, some models could not be executed successfully on the Renesas board, with the program unexpectedly stopping during execution. The root cause of this behavior remains unclear.
-    \item Fig.~\ref{fig:study_quants_error} shows that all other quantization schemes reach an acceptable error. The \textit{basic} conversion perfectly produces the expected outputs, while other types of quantization introduce a bit of error rooted in the nature of quantization. Between \textit{int8} and \textit{16x8} quantization schemes, as expected, \textit{16x8} shows smaller error rates due to its higher precision representation of activations.
+    \item Fig.~\ref{fig:paper-b-study_quants_error} shows that all other quantization schemes reach an acceptable error. The \textit{basic} conversion perfectly produces the expected outputs, while other types of quantization introduce a bit of error rooted in the nature of quantization. Between \textit{int8} and \textit{16x8} quantization schemes, as expected, \textit{16x8} shows smaller error rates due to its higher precision representation of activations.
   \end{itemize}
-  \item \textbf{Execution time:} Although, based on the results illustrated in Fig.~\ref{fig:study_quants_exe}, determining the fastest quantization scheme may not be clear, the following statements appear to summarize the key points. For \gls{fc} models, the \textit{int8 only} and \textit{16x8 int only} quantizations outperform their non-only counterparts, with \textit{16x8 int only} performing best for smaller models and \textit{int8 only} excelling for larger models. For \gls{cnn} models, \textit{basic} and \textit{dynamic} quantizations are significantly slower due to their lack of CMSIS-NN library optimizations. The \textit{int8} and \textit{16x8} variants have similar performance, with \textit{16x8 int only} slightly outperforming on smaller networks and \textit{int8 only} proving better for larger ones.
-  \item \textbf{Flash size:} As shown in Fig.~\ref{fig:study_quants_flash}, all quantization schemes start with relatively similar flash sizes, but as the model scales, the \textit{basic} version's flash size increases fourfold (four bytes per parameter), whereas the other variants increase by only one byte per parameter. Therefore, the \textit{basic} model gets worse as model size increases.
-  \item \textbf{RAM usage:} Based on Fig.~\ref{fig:study_quants_ram}, for \gls{cnn} models, as expected, the \textit{int8}-based variants require less RAM than other types of the same model, since they store activations in 8-bit representation. These are followed by \textit{16x8}-based models, and finally, \textit{basic} and \textit{dynamic} schemes requiring the most RAM. For \gls{fc} models, RAM consumption patterns are less predictable, though the \textit{int8 only} scheme consistently proves efficient, often matching or outperforming other methods.
+  \item \textbf{Execution time:} Although, based on the results illustrated in Fig.~\ref{fig:paper-b-study_quants_exe}, determining the fastest quantization scheme may not be clear, the following statements appear to summarize the key points. For \gls{fc} models, the \textit{int8 only} and \textit{16x8 int only} quantizations outperform their non-only counterparts, with \textit{16x8 int only} performing best for smaller models and \textit{int8 only} excelling for larger models. For \gls{cnn} models, \textit{basic} and \textit{dynamic} quantizations are significantly slower due to their lack of CMSIS-NN library optimizations. The \textit{int8} and \textit{16x8} variants have similar performance, with \textit{16x8 int only} slightly outperforming on smaller networks and \textit{int8 only} proving better for larger ones.
+  \item \textbf{Flash size:} As shown in Fig.~\ref{fig:paper-b-study_quants_flash}, all quantization schemes start with relatively similar flash sizes, but as the model scales, the \textit{basic} version's flash size increases fourfold (four bytes per parameter), whereas the other variants increase by only one byte per parameter. Therefore, the \textit{basic} model gets worse as model size increases.
+  \item \textbf{RAM usage:} Based on Fig.~\ref{fig:paper-b-study_quants_ram}, for \gls{cnn} models, as expected, the \textit{int8}-based variants require less RAM than other types of the same model, since they store activations in 8-bit representation. These are followed by \textit{16x8}-based models, and finally, \textit{basic} and \textit{dynamic} schemes requiring the most RAM. For \gls{fc} models, RAM consumption patterns are less predictable, though the \textit{int8 only} scheme consistently proves efficient, often matching or outperforming other methods.
   \item \textbf{Conclusion:} The choice of quantization scheme depends on many factors and can lead to execution that is a couple of times faster and requires less memory. \rv{Particularly for CNN models, if RAM is a constraint, int8 variants are preferable. Generally,} \textit{int8 only} quantization is a good choice for most cases. Together with the \textit{basic} (non-quantized) variant, these two schemes will serve as the default choices for the remainder of this study.
 \end{itemize}
 
@@ -666,19 +668,19 @@ The counterintuitive nature of this limitation lies in the fact that, in unstruc
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_pruning_clustering_cnn_error.pdf}
     \caption{Deployment error.}
-    \label{fig:study_pruning_clustering_cnn_error}
+    \label{fig:paper-b-study_pruning_clustering_cnn_error}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 3mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_pruning_clustering_cnn_exe.pdf}
     \caption{Execution time. The three plots are drawn on top of each other, appearing as one.}
-    \label{fig:study_pruning_clustering_cnn_exe}
+    \label{fig:paper-b-study_pruning_clustering_cnn_exe}
   \end{subfigure}
   \caption{Performance evaluation of basic, pruned, and clustered \gls{cnn} models on the NUCLEO-L4R5ZI board.}
-  \label{fig:study_pruning_clustering}
+  \label{fig:paper-b-study_pruning_clustering}
 \end{figure}
 
-To elucidate these findings, we evaluated \gls{fc} and \gls{cnn} models on the NUCLEO-L4R5ZI board. In our experiments, we applied 50\% sparsity for pruning and clustering with 16 centroids. These techniques increase the error of the models (see Fig.~\ref{fig:study_pruning_clustering_cnn_error}), which can be mitigated to some extent through fine-tuning. However, as illustrated in Fig.\ref{fig:study_pruning_clustering_cnn_exe}, the execution times for the basic, pruned, and clustered models are nearly identical, with less than 0.01\% difference. This negligible variation means the plots are essentially overlaid. The same holds true for the flash memory usage and RAM requirements of the models.
+To elucidate these findings, we evaluated \gls{fc} and \gls{cnn} models on the NUCLEO-L4R5ZI board. In our experiments, we applied 50\% sparsity for pruning and clustering with 16 centroids. These techniques increase the error of the models (see Fig.~\ref{fig:paper-b-study_pruning_clustering_cnn_error}), which can be mitigated to some extent through fine-tuning. However, as illustrated in Fig.\ref{fig:paper-b-study_pruning_clustering_cnn_exe}, the execution times for the basic, pruned, and clustered models are nearly identical, with less than 0.01\% difference. This negligible variation means the plots are essentially overlaid. The same holds true for the flash memory usage and RAM requirements of the models.
 
 \subsubsection{TFLM vs. Edge Impulse}
 \Gls{tflm} and Edge Impulse are two prominent tools in the \gls{eai} domain. While Edge Impulse originally relied on \gls{tflm} and still provides the option to deploy models using it, it has significantly evolved over the years. With features like its EON compiler, Edge Impulse introduces a unique approach to model execution. However, it is worth noting that Edge Impulse still utilizes \gls{tflm}'s core kernels in most cases.
@@ -688,16 +690,16 @@ To elucidate these findings, we evaluated \gls{fc} and \gls{cnn} models on the N
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_ei_fc_exe.pdf}
     \caption{Execution time.}
-    \label{fig:study_ei_fc_exe}
+    \label{fig:paper-b-study_ei_fc_exe}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_ei_fc_flash.pdf}
     \caption{Flash size.}
-    \label{fig:study_ei_fc_flash}
+    \label{fig:paper-b-study_ei_fc_flash}
   \end{subfigure}
   \caption{Performance evaluation of \gls{fc} models deployed using Edge Impulse and \gls{tflm} on the STM board.}
-  \label{fig:study_ei}
+  \label{fig:paper-b-study_ei}
 \end{figure}
 
 As Edge Impulse does not natively support \glspl{rnn}, this study focuses on testing \gls{fc}, \gls{cnn}, and MLPerf Tiny models deployed on the STM and Renesas boards. The results show that on the Renesas board, \gls{tflm} outperforms Edge Impulse in terms of execution time, flash size, and RAM usage. On the STM board, the key findings are as follows:
@@ -717,22 +719,22 @@ Ekkono is a lightweight edge AI library designed to support incremental learning
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_ekkono_exe.pdf}
     \caption{Execution time.}
-    \label{fig:study_ekkono_exe}
+    \label{fig:paper-b-study_ekkono_exe}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_ekkono_flash.pdf}
     \caption{Flash size.}
-    \label{fig:study_ekkono_flash}
+    \label{fig:paper-b-study_ekkono_flash}
   \end{subfigure}
   \caption{Performance evaluation of Ekkono and \gls{tflm} models on the NUCLEO-L4R5ZI board.}
-  \label{fig:study_ekkono}
+  \label{fig:paper-b-study_ekkono}
 \end{figure}
 
 \begin{itemize}
   \item \textbf{Model correctness:} Both Ekkono and \gls{tflm}'s \textit{basic} version can perfectly reproduce the expected values. \gls{tflm}'s \textit{int8 only} version has a bit of error which remains in the acceptable range.
-  \item \textbf{Execution time:} As shown in Fig.~\ref{fig:study_ekkono_exe}, Ekkono delivered faster execution times for smaller models. In contrast, \gls{tflm} performed better with larger models, particularly when using the \textit{int8 only} version.
-  \item \textbf{Flash size:} As illustrated in Fig.~\ref{fig:study_ekkono_flash}, Ekkono, being a simpler and more lightweight library, offers a smaller baseline flash memory footprint than \gls{tflm} (18.8 kB vs. 52.2 kB). However, as model size increases, the performance gap narrows, with the \textit{basic} version of \gls{tflm} catching up. This is while the \textit{int8 only} version of \gls{tflm} surpases their performance and becomes the best choice for large models.
+  \item \textbf{Execution time:} As shown in Fig.~\ref{fig:paper-b-study_ekkono_exe}, Ekkono delivered faster execution times for smaller models. In contrast, \gls{tflm} performed better with larger models, particularly when using the \textit{int8 only} version.
+  \item \textbf{Flash size:} As illustrated in Fig.~\ref{fig:paper-b-study_ekkono_flash}, Ekkono, being a simpler and more lightweight library, offers a smaller baseline flash memory footprint than \gls{tflm} (18.8 kB vs. 52.2 kB). However, as model size increases, the performance gap narrows, with the \textit{basic} version of \gls{tflm} catching up. This is while the \textit{int8 only} version of \gls{tflm} surpases their performance and becomes the best choice for large models.
   \item \textbf{RAM usage:} Similar to flash size trends, Ekkono is more efficient with smaller models, while \gls{tflm}'s \textit{int8 only} variant performs better as models grow in size. Nevertheless, the memory requirements for all tested \gls{fc} models were relatively modest (maximum 14 kB) and are unlikely to constrain most applications.
   \item \textbf{Conclusion:} For smaller models, Ekkono provides a more efficient solution. However, as model size increases, \gls{tflm}'s \textit{int8 only} variant emerges as the more effective choice.
 \end{itemize}
@@ -745,16 +747,16 @@ Renesas eAI Translator is a vendor-specific tool designed to enable the executio
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_translator_cnn_error.pdf}
     \caption{Deployment error.}
-    \label{fig:study_translator_cnn_error}
+    \label{fig:paper-b-study_translator_cnn_error}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_translator_cnn_flash.pdf}
     \caption{Flash size.}
-    \label{fig:study_translator_cnn_flash}
+    \label{fig:paper-b-study_translator_cnn_flash}
   \end{subfigure}
   \caption{Performance evaluation of \gls{cnn} models deployed using eAI Translator and \gls{tflm} on the Renesas RX65N board.}
-  \label{fig:study_translator}
+  \label{fig:paper-b-study_translator}
 \end{figure}
 
 \begin{itemize}
@@ -766,7 +768,7 @@ Renesas eAI Translator is a vendor-specific tool designed to enable the executio
 \end{itemize}
 
 \section{Conclusion}
-\label{sec:conclusion}
+\label{sec:paper-b-conclusion}
 
 This paper explores the landscape of \gls{eai} tools, introduces an automation system to streamline their usage, and benchmarks their performance across various metrics. The review identifies key features of these tools, revealing that while they generally support techniques like quantization, many advanced methods in the field remain absent.
 
@@ -782,11 +784,11 @@ As embedded systems increasingly rely on \gls{ai}-driven capabilities, this stud
 This work was supported by the Innovation Fund Denmark for the Project Digital Research Centre Denmark (DIREC) under Grant 9142-00001B.
 
 \section{Additional Experiments}
-\label{sec:appendix}
+\label{sec:paper-b-appendix}
 
 \subsection{RNNs}
 
-\Gls{rnn} models are widely used in applications that require processing sequential data. However, deploying these resource-intensive models on embedded devices requires careful consideration. In this study, we evaluated the performance of SimpleRNN, LSTM, and GRU models using \gls{tflm} on the NUCLEO-L4R5ZI board. The models are introduced in Section \ref{sec:models}, and the results can be found in Table~\ref{tab:RNN_results}. To provide a clear comparison, memory usage is visualized in Fig.\ref{fig:study_rnn}, from which \textit{Simple 0} is excluded due to its negligible resource requirements compared to other models. Similarly, \textit{Simple 2} is excluded because its \textit{basic} version failed to execute on the board.
+\Gls{rnn} models are widely used in applications that require processing sequential data. However, deploying these resource-intensive models on embedded devices requires careful consideration. In this study, we evaluated the performance of SimpleRNN, LSTM, and GRU models using \gls{tflm} on the NUCLEO-L4R5ZI board. The models are introduced in Section \ref{sec:paper-b-models}, and the results can be found in Table~\ref{tab:paper-b-RNN_results}. To provide a clear comparison, memory usage is visualized in Fig.\ref{fig:paper-b-study_rnn}, from which \textit{Simple 0} is excluded due to its negligible resource requirements compared to other models. Similarly, \textit{Simple 2} is excluded because its \textit{basic} version failed to execute on the board.
 
 \begin{table}[htbp]
   \caption{Performance Evaluation of \gls{rnn} Models}
@@ -817,7 +819,7 @@ This work was supported by the Innovation Fund Denmark for the Project Digital R
       & int8 only & 0.044 & 374.4 & 809.8 & 295.4 \\
       \hline
     \end{tabular}
-    \label{tab:RNN_results}
+    \label{tab:paper-b-RNN_results}
   \end{center}
 \end{table}
 
@@ -826,23 +828,23 @@ This work was supported by the Innovation Fund Denmark for the Project Digital R
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_rnn_flash.pdf}
     \caption{Flash size.}
-    \label{fig:study_rnn_flash}
+    \label{fig:paper-b-study_rnn_flash}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_rnn_ram.pdf}
     \caption{RAM usage.}
-    \label{fig:study_rnn_ram}
+    \label{fig:paper-b-study_rnn_ram}
   \end{subfigure}
   \caption{Performance evaluation of RNN models on the NUCLEO-L4R5ZI board.}
-  \label{fig:study_rnn}
+  \label{fig:paper-b-study_rnn}
 \end{figure}
 
 \begin{itemize}
   \item \textbf{Model correctness:} With the exception of the \textit{basic} version of \textit{Simple 2} which runs out of memory, all models achieved acceptable error rates. The most concerning case is \textit{GRU}, which may require more attention.
   \item \textbf{Execution time:} Surprisingly, the \textit{basic} variants of the models show faster execution times than their \textit{int8 only} counterparts, with the exception of \textit{Shakespeare 2}.
-  \item \textbf{Flash size:} Against our expectations, Fig.~\ref{fig:study_rnn_flash} reveals that the \textit{int8 only} variants require significantly more flash memory compared to the \textit{basic} versions.
-  \item \textbf{RAM usage:} As shown in Fig.~\ref{fig:study_rnn_ram}, the \textit{int8 only} variants use less RAM than \textit{basic} models. However, we expected them to have the advantage with a bigger margin.
+  \item \textbf{Flash size:} Against our expectations, Fig.~\ref{fig:paper-b-study_rnn_flash} reveals that the \textit{int8 only} variants require significantly more flash memory compared to the \textit{basic} versions.
+  \item \textbf{RAM usage:} As shown in Fig.~\ref{fig:paper-b-study_rnn_ram}, the \textit{int8 only} variants use less RAM than \textit{basic} models. However, we expected them to have the advantage with a bigger margin.
   \item \textbf{Conclusion:} This study had many unexpected results. Notably, the \textit{int8 only} variants of the models are not as efficient as expected. The \textit{basic} versions are faster and consume less flash memory, while they require slightly more RAM.
 \end{itemize}
 
@@ -855,23 +857,23 @@ It is believed that LSTM is more powerful than GRU, while GRU is often favored f
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_opt_cnn_exe.pdf}
     \caption{Execution time. \textit{O3} and \textit{Of} are almost overlapped.}
-    \label{fig:study_opt_cnn_exe}
+    \label{fig:paper-b-study_opt_cnn_exe}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_opt_cnn_flash.pdf}
     \caption{Flash size. \textit{O3} and \textit{Of} are almost overlapped.}
-    \label{fig:study_opt_cnn_flash}
+    \label{fig:paper-b-study_opt_cnn_flash}
   \end{subfigure}
   \caption{Performance evaluation of \gls{cnn} models with different GCC optimization levels on the NUCLEO-L4R5ZI board.}
-  \label{fig:study_opt}
+  \label{fig:paper-b-study_opt}
 \end{figure}
 
 The \gls{gcc} is a widely used compiler for C and C++ programming languages. \Gls{gcc} provides several optimization levels, ranging from \textit{O0} (no optimization) to \textit{O3} (maximum optimization). In this study, we evaluated the impact of \textit{Os} (optimize for size), \textit{Of} (optimize for speed), and \textit{O3} on the performance of \gls{fc} and \gls{cnn} models deployed on the NUCLEO-L4R5ZI board using \gls{tflm}.
 
 \begin{itemize}
   \item \textbf{Model correctness:} All three optimization levels produce the exact same outputs, confirming that the correctness of the models remains unaffected by these optimizations.
-  \item \textbf{Execution time:} As shown in Fig.~\ref{fig:study_opt_cnn_exe}, the \textit{O3} and \textit{Of} optimization levels perform almost identically and better than \textit{Os}.
+  \item \textbf{Execution time:} As shown in Fig.~\ref{fig:paper-b-study_opt_cnn_exe}, the \textit{O3} and \textit{Of} optimization levels perform almost identically and better than \textit{Os}.
   \item \textbf{Flash size:} The \textit{O3} and \textit{Of} optimizations resulted in similar flash memory usage, while \textit{Os} produced a slightly smaller flash size.
   \item \textbf{RAM usage:} No notable differences in RAM usage were observed across the three optimization levels.
   \item \textbf{Conclusion:} Both \textit{O3} and \textit{Of} provide comparable performance and outperform \textit{Os} in terms of execution time. However, if reducing flash size is a priority, \textit{Os} offers a slight advantage.
@@ -886,19 +888,19 @@ The \gls{fpu} is a specialized coprocessor designed to handle floating-point ari
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_fpu_fc_exe.pdf}
     \caption{\Gls{fc} models. \textit{int8 only} variants are overlapped.}
-    \label{fig:study_fpu_fc_exe}
+    \label{fig:paper-b-study_fpu_fc_exe}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_fpu_cnn_exe.pdf}
     \caption{\Gls{cnn} models. \textit{int8 only} variants are overlapped.}
-    \label{fig:study_fpu_cnn_exe}
+    \label{fig:paper-b-study_fpu_cnn_exe}
   \end{subfigure}
   \caption{Execution time of models with and without the \gls{fpu} on the NUCLEO-L4R5ZI board.}
-  \label{fig:study_fpu}
+  \label{fig:paper-b-study_fpu}
 \end{figure}
 
-Our results show that \gls{fpu} does not have a noticable impact on any of the evaluated metrics other than execution time. As illustrated in Fig.~\ref{fig:study_fpu}, the \gls{fpu} provides a significant speedup (85\% to 850\%) for the \textit{basic} variants of both \gls{fc} and \gls{cnn} models. Still, if using \textit{int8 only}, utilizing the CMSIS-NN library can be even more beneficial and there is no need for the \gls{fpu}.
+Our results show that \gls{fpu} does not have a noticable impact on any of the evaluated metrics other than execution time. As illustrated in Fig.~\ref{fig:paper-b-study_fpu}, the \gls{fpu} provides a significant speedup (85\% to 850\%) for the \textit{basic} variants of both \gls{fc} and \gls{cnn} models. Still, if using \textit{int8 only}, utilizing the CMSIS-NN library can be even more beneficial and there is no need for the \gls{fpu}.
 
 \subsection{STM vs. Renesas}
 
@@ -909,16 +911,16 @@ STMicroelectronics and Renesas are two major semiconductor companies that provid
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_stm_renesas_cnn_exe.pdf}
     \caption{Execution time. The \textit{int8 only} version of the Renesas board does not utilize CMSIS-NN and is not comparable to its STM counterpart.}
-    \label{fig:study_stm_renesas_cnn_exe}
+    \label{fig:paper-b-study_stm_renesas_cnn_exe}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_stm_renesas_cnn_flash.pdf}
     \caption{Flash size.}
-    \label{fig:study_stm_renesas_cnn_flash}
+    \label{fig:paper-b-study_stm_renesas_cnn_flash}
   \end{subfigure}
   \caption{Performance evaluation of \gls{cnn} models on the STM and Renesas boards.}
-  \label{fig:study_stm_renesas}
+  \label{fig:paper-b-study_stm_renesas}
 \end{figure}
 
 The two selected boards from these companies, STM NUCLEO-L4R5ZI and Renesas RX65N, have similar specifications, including identical flash size, RAM, and clock speed, along with many other shared features. However, the RX65N board has a proprietary RXv2 CPU architecture, while the NUCLEO-L4R5ZI board uses an ARM Cortex-M4 core. This distinction makes the comparison between these two boards particularly intriguing.
@@ -927,8 +929,8 @@ The two selected boards from these companies, STM NUCLEO-L4R5ZI and Renesas RX65
 
 \begin{itemize}
   \item \textbf{Model correctness:} The Renesas board fails to run a few of the models. Aside from this, the two boards provide similar results.
-  \item \textbf{Execution time:} When evaluating the \textit{basic} versions of models and excluding \textit{int8-only} variants (since CMSIS-NN optimizations are used only on the STM board), the Renesas board performs slightly better in terms of execution time. This is illustrated in Fig.~\ref{fig:study_stm_renesas_cnn_exe}.
-  \item \textbf{Flash size:} As shown in Fig.~\ref{fig:study_stm_renesas_cnn_flash}, the STM board requires less flash memory compared to the Renesas board. The difference is more noticeable for smaller models. This is mainly due to the difference between the size of the two libraries, which becomes less significant as the model size increases.
+  \item \textbf{Execution time:} When evaluating the \textit{basic} versions of models and excluding \textit{int8-only} variants (since CMSIS-NN optimizations are used only on the STM board), the Renesas board performs slightly better in terms of execution time. This is illustrated in Fig.~\ref{fig:paper-b-study_stm_renesas_cnn_exe}.
+  \item \textbf{Flash size:} As shown in Fig.~\ref{fig:paper-b-study_stm_renesas_cnn_flash}, the STM board requires less flash memory compared to the Renesas board. The difference is more noticeable for smaller models. This is mainly due to the difference between the size of the two libraries, which becomes less significant as the model size increases.
   \item \textbf{RAM usage:} The RAM usage of the models is almost identical across the two boards.
   \item \textbf{Conclusion:} The two boards seem to have a relatively similar performance. The Renesas board might be slightly faster, but the STM board has a bit smaller flash size.
 \end{itemize}
@@ -940,18 +942,20 @@ The two selected boards from these companies, STM NUCLEO-L4R5ZI and Renesas RX65
   \begin{subfigure}[b]{\resultswidth}
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_ccrx_fc_exe.pdf}
     \caption{\Gls{fc} models.}
-    \label{fig:study_ccrx_fc_exe}
+    \label{fig:paper-b-study_ccrx_fc_exe}
   \end{subfigure}
   \begin{subfigure}[b]{\resultswidth}
     \vskip 5mm  % Add vertical space
     \includegraphics[width=\textwidth]{Pictures/Paper_edgemark/study_ccrx_cnn_exe.pdf}
     \caption{\Gls{cnn} models.}
-    \label{fig:study_ccrx_cnn_exe}
+    \label{fig:paper-b-study_ccrx_cnn_exe}
   \end{subfigure}
   \caption{Execution time of models deployed using CC-RX and \gls{gcc} compilers on the Renesas RX65N board.}
-  \label{fig:study_ccrx}
+  \label{fig:paper-b-study_ccrx}
 \end{figure}
 
 Renesas offers \gls{gcc} as a free compiler for their microcontrollers, while they also provide their proprietary compiler, CC-RX, which is further optimized for RX microcontrollers. In this study, we evaluated the performance of \gls{fc} and \gls{cnn} models deployed on the Renesas RX65N board using eAI Translator and CC-RX and \gls{gcc} compilers.
 
-Since we could not interpret the memory requirements of the models using CC-RX, we only evaluated the execution time of the models. As evidenced by Fig.~\ref{fig:study_ccrx}, the \gls{gcc} compiler demonstrated better performance than CC-RX in terms of execution speed under default settings and highest optimization levels.
+Since we could not interpret the memory requirements of the models using CC-RX, we only evaluated the execution time of the models. As evidenced by Fig.~\ref{fig:paper-b-study_ccrx}, the \gls{gcc} compiler demonstrated better performance than CC-RX in terms of execution speed under default settings and highest optimization levels.
+
+\endgroup
