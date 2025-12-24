@@ -229,10 +229,14 @@ AIMET is a library for quantization simulation and QAT, with a focus on Qualcomm
 \subsection{NNCF}
 The NNCF is Intel's toolkit (often used with OpenVINO) for model compression, including quantization. It primarily targets INT8 quantization, but also supports other lower bit-widths (INT4, FP8, FP16, etc.) and novel formats like E2M1 (4-bit FP). NNCF offers both QAT and PTQ, as well as automated mixed-precision algorithms. Its quantization algorithms generally use uniform affine quantizers. After compression, NNCF exports the model for real inference through the OpenVINO runtime, which uses optimized integer kernels on Intel hardware \cite{GitHubNNCF}.
 
-\begin{table}[htbp]
-\centering
+\begingroup
+\renewcommand\arraystretch{1.25}
+\setlength{\tabcolsep}{4pt}
+\begin{sidewaystable}[htbp]
 \caption{Summary of quantization capabilities of the surveyed eAI tools. The \textit{Params} in \textit{Quantizes} column include both weights and biases. In the \textit{Type} column, \textit{UA} stands for uniform affine.}
 \label{tab:quantization_summary}
+\begin{center}
+\footnotesize
 \begin{tabular}{lllllll}
 \hline
 \textbf{Tool} & \textbf{Quantizes} & \textbf{PTQ/QAT} & \textbf{\makecell[l]{Mixed \\ precision}} & \textbf{Fake/Real} & \textbf{Bits} & \textbf{Type} \\
@@ -262,7 +266,9 @@ AIMET & Params, Acts & Both & Yes & Fake & \makecell[l]{FP16, W8/A16, \\ W8/A8, 
 NNCF & Params, Acts & Both & Yes & \makecell[l]{Fake QAT, Real PTQ \\ (via OpenVINO)} & 8-bit, (others) & (UA) \\
 \hline
 \end{tabular}
-\end{table}
+\end{center}
+\end{sidewaystable}
+\endgroup
 
 \section{Discussion and Future Directions}
 \label{sec:paper_c_discussion}
