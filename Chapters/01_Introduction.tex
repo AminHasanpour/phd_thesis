@@ -22,7 +22,7 @@ The main challenges addressed by \gls{tinyml} include the following:
     \item \textbf{Connectivity:} Many embedded devices operate in environments with limited or unreliable internet connectivity. \Gls{tinyml} allows such systems to operate autonomously without continuous network access, ensuring robustness and uninterrupted functionality in remote or disconnected settings.
 \end{itemize}
 
-To achieve these goals, \gls{tinyml} leverages a range of model optimization and system-level techniques, including the following:
+To achieve these goals, \gls{tinyml} leverages a range of model optimization and system-level techniques, including the following \cite{Njor2024}:
 \begin{itemize}
     \item \textbf{Quantization:} Quantization reduces the numerical precision used to represent a model's weights, activations, and sometimes biases, typically converting 32-bit floating-point values into lower-bit fixed-point integers (e.g., 8-bit). This can significantly lower memory usage and computational cost, and allows models to run efficiently on microcontrollers without floating-point hardware. While quantization might slightly reduce accuracy, techniques such as quantization-aware training or mixed-precision quantization help preserve performance.
     \item \textbf{Pruning:} Pruning removes parameters (weights, neurons, filters, or channels) that contribute little to a model's output, thereby reducing model size and computation. Unstructured pruning removes individual weights and can create sparse models, while structured pruning removes entire components (e.g., filters or neurons), which is more compatible with embedded hardware. The goal is to eliminate redundancy while maintaining acceptable accuracy.
@@ -59,3 +59,30 @@ This thesis is structured around three peer-reviewed papers, followed by a concl
     \item \textbf{Chapter \ref{ch:paper-b-edgemark}} presents Paper~B \cite{hasanpour2025edgemark}, which provides a comprehensive overview of existing \gls{tinyml} tools and frameworks, highlighting their capabilities and limitations. It also introduces EdgeMark, a system designed to facilitate the generation and deployment of \gls{ml} models across multiple embedded platforms. EdgeMark currently supports a wide range of models and datasets, four different conversion tools, and two hardware platforms. Its modular design enables easy extension to additional models, datasets, tools, and hardware targets. In addition, the paper benchmarks the supported tools across a wide range of models and deployment scenarios, offering insights into their relative performance and practical limitations.
     \item \textbf{Chapter \ref{ch:paper-c-quantization}} presents Paper~C \cite{hasanpour2025survey}, which focuses on quantization in \gls{tinyml} tools. It surveys twelve widely used \gls{tinyml} frameworks with particular emphasis on their quantization dimensions, including supported quantization types, hardware compatibility, and deployment workflows. The findings are summarized in a comprehensive comparison table that enables scientists and engineers to quickly identify suitable tools for their specific application requirements. The paper further discusses current trends, trade-offs in quantization strategies, and potential future directions for quantization in embedded and edge \gls{ai} tools.
 \end{itemize}
+
+\section{Additional Publications and Research Outputs}
+In addition to the papers included in this thesis, several other research outputs were produced during the course of this PhD study. While these works are related to the overall research agenda, they are not directly included in the thesis. They are listed below for completeness.
+\begin{description}
+    \item[Peer-reviewed article]\mbox{}\\
+    \AtNextCite{\defcounter{maxnames}{99}}
+    \fullcite{Njor2024}
+
+    This work presents a comprehensive review of the TinyML stack, with particular emphasis on its application in predictive maintenance. The paper introduces a novel taxonomy for the systematic study of TinyML systems and provides an in-depth discussion of the different layers of the TinyML stack. Specifically, it covers the motivation for TinyML, its advantages and disadvantages, hardware limitations and corresponding solutions, available toolchains for both traditional \gls{ml} and \gls{dl}, model types and optimization techniques, relevant datasets, and common application areas, with a special focus on predictive maintenance.
+
+    \item[Manuscript in preparation]\mbox{}\\
+    \AtNextCite{\defcounter{maxnames}{99}}
+    \fullcite{Marstrand2026}
+
+    This work introduces a novel \gls{nas} method, termed predictor-guided \gls{dfm}, which is particularly well suited for TinyML applications. The proposed approach is able to identify architectures that are comparable to, or even outperform, their counterparts, while offering advantageous properties such as high search efficiency and continuous improvement over time. The method has also been extended to multi-objective optimization, enabling simultaneous optimization of competing objectives, for example model accuracy and memory footprint.
+
+    \item[Publication feature]\mbox{}\\
+    \fullcite{DIRECpost}
+
+    This DIREC news feature highlights EdgeMark as a key enabling tool supporting industrial partners such as VELUX and Grundfos. It illustrates the practical relevance of the presented research and underscores the importance of such tools for the industrial adoption of TinyML technologies.
+
+    \item[Open-source software]\mbox{}\\
+    \fullcite{EdgeMarkRepo}
+
+    \item[Open-source software]\mbox{}\\
+    \fullcite{CavitationRepo}
+\end{description}
