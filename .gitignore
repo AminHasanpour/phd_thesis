@@ -38,6 +38,7 @@ TODO.md
 *.run.xml
 *.snm
 *.synctex.gz
+*.synctex(busy)
 *.tex.backup
 *.tex~
 *.thm
