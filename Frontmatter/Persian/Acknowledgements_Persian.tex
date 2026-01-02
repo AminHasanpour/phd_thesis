@@ -1,0 +1,39 @@
+\documentclass[11pt]{article}
+
+% Packages for Persian text
+\usepackage{fontspec}
+\usepackage{bidi}
+\usepackage{xcolor}
+
+% Set up Vazirmatn font for Persian (using font files from Vazirmatn folder)
+\newfontfamily\persianfont[
+    Path=../../Vazirmatn/,
+    Extension=.ttf,
+    UprightFont=*-Regular,
+    BoldFont=*-Bold,
+    ItalicFont=*-Regular,
+    BoldItalicFont=*-Bold,
+    Script=Arabic
+]{Vazirmatn}
+
+% Page settings - minimal margins
+\usepackage[paperwidth=150mm,paperheight=38mm,margin=0mm]{geometry}
+\pagestyle{empty}
+
+% Remove paragraph indentation
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+\begin{document}
+
+% Persian text block
+\begin{RTL}
+\persianfont
+
+پدر و مادر عزیز، امیدوارم نوشتن این پاراگراف متفاوت بیانگر اهمیت آن برای من باشد. نمی‌خواهم تنها برای حمایتتان در مسیر دکتری تشکر کنم، که این فقط گوشه‌ای از کارهای بزرگیست که برایم کردید. شما همیشه از آرزوها و موفقیت‌هایم حمایت کردید، حتی زمانی که آنها من را از خانه دور می‌کردند. و من برای همیشه بابت ازخودگذشتگی و محبت بی‌پایانتان به شما مدیونم. هر آنچه در زندگی بدست آوردم و یا بیاورم، بازتابی از مهر و محبت و فداکاری شماست.
+
+و اما برادر و خواهر عزیزم؛ همراهی، هم‌صحبتی و حمایت شما برایم مایه آرامش بوده و کمک کرده تا بتوانم با چالش‌های زندگی روبه‌رو شوم. از صمیم قلب از شما سپاسگزارم.
+
+\end{RTL}
+
+\end{document}
