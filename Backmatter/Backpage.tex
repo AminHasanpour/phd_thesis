@@ -2,8 +2,13 @@
 \thispagestyle{empty}
 \pagecolor{frontbackcolor}
 \color{white}
+\glsresetall
 
-\blindtext % Remove this for a blank page or write your own text
+The rapid growth of \gls{ml} and \gls{dl} has enabled increasingly capable intelligent systems, yet deploying such models on resource-constrained embedded devices remains a major challenge. \Gls{tinyml} addresses this challenge by enabling efficient on-device inference, offering benefits in latency, privacy, energy consumption, and robustness in low-connectivity environments. However, the \gls{tinyml} ecosystem is highly fragmented, spanning heterogeneous hardware platforms, diverse software toolchains, and varying deployment workflows, which complicates tool selection, model optimization, and large-scale adoption in industrial contexts.
+
+This thesis investigates the deployment of \gls{ml} models on embedded devices, with a focus on practical efficiency and adoption in industrial applications. First, a comparative study of cavitation detection in industrial pumps illustrates the complexity of decision-making by showing that traditional \gls{ml} approaches such as Support Vector Machines can outperform or rival \gls{dl} models when paired with suitable feature engineering, while also highlighting the importance of benchmarking models directly on target hardware. Second, the thesis introduces \textit{EdgeMark}, a modular automation and benchmarking framework for embedded AI tools that streamlines model conversion, deployment, and evaluation across heterogeneous TinyML platforms. EdgeMark enables systematic comparison of toolchains and reveals practical limitations and performance trade-offs. Third, a detailed survey of quantization techniques in embedded AI toolchains provides an analytical overview of supported quantization schemes, hardware compatibility, and workflow characteristics, offering engineers actionable guidance for selecting suitable deployment pipelines.
+
+Together, these contributions advance the understanding of TinyML deployment strategies, clarify the capabilities and constraints of current embedded AI tools, and support more informed, future-proof decision-making for researchers and practitioners working with \gls{ml} on resource-constrained devices.
 
 \vspace*{\fill}
 
